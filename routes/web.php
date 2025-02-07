@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +16,13 @@ use App\Http\Controllers\PostController;
 
 // Ruta principal que redirige al listado de posts
 Route::get('/', function () {
-    return redirect()->route('posts.index');
+    return redirect()->route('products.index');
 });
 
 // Rutas del controlador PostController
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // Listar posts
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create'); // Formulario para crear un post
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); // Guardar un nuevo post
-Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit'); // Formulario para editar un post
-Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update'); // Actualizar un post existente
-Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy'); // Eliminar un post
+Route::get('/products', [ProductController::class, 'index'])->name('products.index'); // Listar posts
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Formulario para crear un post
+Route::post('/products', [ProductController::class, 'store'])->name('products.store'); // Guardar un nuevo post
+Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit'); // Formulario para editar un post
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update'); // Actualizar un post existente
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy'); // Eliminar un post

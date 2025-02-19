@@ -68,4 +68,11 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product eliminado con éxito');
     }
+
+    public function listProducts(Product $product)
+    {
+        $products = Product::all();
+
+        return view('products.listProducts', compact('products'));
+    }
 }

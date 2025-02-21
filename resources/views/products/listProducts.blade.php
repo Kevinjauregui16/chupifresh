@@ -1,26 +1,30 @@
 @extends('layouts.app')
 
 @section('contenido')
-    <div class="mt-8">
-        <h1 class="mb-6 text-3xl font-bold text-center text-gray-200">Productos</h1>
-        <div class="flex justify-center">
-            <a href="{{ route('products.create') }}"
-                class="text-green-500 hover:text-green-300 bg-gray-500 bg-opacity-25 p-2 rounded-2xl">
-                Nuevo<i class="fa-solid fa-plus"></i></a>
-        </div>
+    <x-tittle-component tittle="PRODUCTOS" />
+
+    <div class="mt-12">
+        <x-navbar />
     </div>
 
-    <div class="font-sans leading-normal tracking-normal ">
-        <div class="max-w-7xl mx-auto p-6 mt-5 shadow-xl rounded-2xl bg-gray-500 bg-opacity-25 ">
+    {{-- <div class="flex justify-center">
+        <a href="{{ route('products.create') }}"
+            class="text-green-500 hover:text-green-300 bg-gray-500 bg-opacity-25 p-2 rounded-2xl">
+            Nuevo<i class="fa-solid fa-plus"></i></a>
+    </div> --}}
+
+    <div class="">
+        <div class="max-w-7xl mx-auto p-6 mt-5 rounded-2xl bg-[#141318]">
+            <h2 class="text-gray-200 text-xl font-bold">Lista de productos</h2>
             @if ($products->isEmpty())
-                <p class="text-center text-lg text-gray-600">Sin productos</p>
+                <p class="text-center text-lg text-gray-600 py-12">Sin productos</p>
             @else
                 <div class="overflow-x-auto">
                     <table class="min-w-full border-collapse">
                         <thead class="text-white">
                             <tr>
                                 {{-- <th class="py-2 px-4 border-b text-left text-gray-700">ID</th> --}}
-                                <th class="py-2 px-4 border-b text-left">Producto</th>
+                                <th class="py-2 px-4 border-b text-left">Nombre</th>
                                 <th class="py-2 px-4 border-b text-left">Stock</th>
                                 <th class="py-2 px-4 border-b text-left">Costo de produccion</th>
                                 <th class="py-2 px-4 border-b text-left">Precio de venta</th>

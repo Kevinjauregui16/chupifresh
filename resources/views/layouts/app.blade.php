@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-<body class="flex justify-center items-center" style="background-color: #160326; background-opacity: 85%;">
-    <div class="px-2 max-w-full sm:max-w-4xl mx-auto">
+<body class="flex justify-center items-center" style="background-color: #0D0D11;">
+    <div class="w-full px-6">
         <!-- Sección donde se inyectará el contenido de otras vistas -->
         @yield('contenido')
     </div>
     <footer
-        class="bg-gray-500 bg-opacity-25 flex justify-evenly items-center w-[95%] h-20 bottom-4 fixed text-center m-auto rounded-full gap-2">
+        class="bg-[#141318] flex justify-evenly items-center w-[95%] h-20 bottom-4 fixed text-center m-auto rounded-full gap-2">
         <x-button-link route="products.index" icon="chart-pie" />
         <x-button-link route="products.listProducts" icon="bars-staggered" />
         <x-button-link route="products.listProducts" icon="basket-shopping" />

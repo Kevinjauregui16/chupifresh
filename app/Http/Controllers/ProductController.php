@@ -71,8 +71,9 @@ class ProductController extends Controller
 
     public function listProducts(Product $product)
     {
+        $title = '';
         $products = Product::all();
 
-        return view('products.listProducts', compact('products'));
+        return view('products.listProducts', compact('title', 'products'));
     }
 }

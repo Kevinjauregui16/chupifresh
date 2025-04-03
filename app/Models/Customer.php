@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sale;
 
-class Product extends Model
+class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'quantity'];
+    protected $fillable = ['name'];
 
     public function sales()
     {
-        return $this->belongsToMany(Sale::class)->withPivot('quantity', 'price');
+        return $this->hasMany(Sale::class);
     }
 }

@@ -6,22 +6,22 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TittleComponent extends Component
+class LinkNavbar extends Component
 {
-    public $tittle;
+    public $href;
     /**
      * Create a new component instance.
      */
-    public function __construct($tittle)
+    public function __construct($href = '#')
     {
-        $this->tittle = $tittle;
+       $this->href = $href;
     }
 
     /**
      * Get the view / contents that represent the component.
      */
-    public function render()
+    public function render(): View|string
     {
-        return view('components.tittle-component');
+        return view('components.link-navbar');
     }
 }

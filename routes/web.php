@@ -1,30 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Aquí es donde puedes registrar las rutas web de tu aplicación. Estas
-| rutas son cargadas por el RouteServiceProvider y contienen el middleware
-| "web". ¡Ahora crea algo grandioso!
-|
-*/
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-// Ruta principal que redirige al listado de posts
-Route::get('/', function () {
-    return redirect()->route('products.index');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-// Rutas del controlador PostController
-Route::get('/dashboard', [ProductController::class, 'index'])->name('products.index');
-// Listar posts
-Route::get('/products/listProducts', [ProductController::class, 'listProducts'])->name('products.listProducts');
-Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Formulario para crear un post
-Route::post('/products', [ProductController::class, 'store'])->name('products.store'); // Guardar un nuevo post
-Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit'); // Formulario para editar un post
-Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update'); // Actualizar un post existente
-Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy'); // Eliminar un post
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');

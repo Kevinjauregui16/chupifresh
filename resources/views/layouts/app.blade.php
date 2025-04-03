@@ -26,7 +26,7 @@
     <!-- Header en la parte izquierda -->
     <header class="bg-primary w-1/5 h-full flex flex-col items-center justify-center">
         <div class="h-1/3">
-            <img src="{{ asset('storage/llama.png') }}" alt="logo" class="w-32 h-32 bg-white p-2 rounded-full mt-4">
+            <img src="{{ asset('llama.png') }}" alt="logo" class="w-32 h-32 bg-white p-2 rounded-full mt-4">
             <h1 class="text-xl text-white text-center font-black mt-2">LlamBoard</h1>
         </div>
         <div class="h-2/3 w-full flex flex-col items-center justify-start gap-1">
@@ -37,23 +37,18 @@
         </div>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="text-red-500 bg-white px-4 rounded mb-2">
+            <button type="submit" class="bg-black bg-opacity-40 text-red-500 mb-4 text-lg font-semibold px-2 py-1 rounded-lg">
                 Logout
+                <i class="fa-solid fa-right-from-bracket"></i>
             </button>
         </form>
     </header>
 
     <!-- Contenido principal -->
     <div class="flex flex-col w-full">
-
         <main class="flex-grow">
             @yield('content')
         </main>
-
-        <!-- Footer siempre al final -->
-        {{-- <footer class="">
-            <h2>footer</h2>
-        </footer> --}}
     </div>
 </body>
 

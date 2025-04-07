@@ -36,8 +36,8 @@
 
             <div class="bg-white shadow-md rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
-                    <h2 class="text-lg font-bold mb-2">Sales</h2>
-                    <p class="text-3xl font-semibold text-green-500">$5,000</p>
+                    <h2 class="text-lg font-bold mb-2">Total Sales</h2>
+                    <p class="text-3xl font-semibold text-green-500">${{ $sales }}</p>
                 </div>
                 <div class="w-1/2 flex justify-center items-center border-r-4 border-green-500">
                     <i class="fa-solid fa-wallet fa-3x"></i>

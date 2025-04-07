@@ -21,7 +21,7 @@
                 @if ($products->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="2" class="text-center text-amber-500 text-lg py-4">No products found.</td>
+                            <td colspan="5" class="text-center text-amber-500 text-lg py-4">No products found.</td>
                         </tr>
                     </tbody>
                 @else
@@ -34,10 +34,8 @@
                             <td class="px-4 py-2">{{ $product->price }}</td>
                             <td class="px-4 py-2">{{ $product->quantity }}</td>
                             <td class="px-4 py-2">
-                                <form action="{{ route('products.edit', $product) }}" method="GET" class="inline-block">
-                                    <button type="submit"
-                                        class="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg">Edit</button>
-                                </form>
+                                <a href="{{ route('products.edit', $product) }}"
+                                    class="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg">Edit</a>
                                 <form action="{{ route('products.destroy', $product) }}" method="POST"
                                     class="inline-block">
                                     @csrf

@@ -56,7 +56,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): View
+    public function edit($id): View
     {
         return view('products.edit', [
             'product' => Product::findOrFail($id),

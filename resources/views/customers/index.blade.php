@@ -19,7 +19,7 @@
                 @if ($customers->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="2" class="text-center text-amber-500 text-lg py-4">No customers found.</td>
+                            <td colspan="3" class="text-center text-amber-500 text-lg py-4">No customers found.</td>
                         </tr>
                     </tbody>
                 @else
@@ -30,10 +30,8 @@
                             <td class="px-4 py-2">{{ $customer->id }}</td>
                             <td class="px-4 py-2">{{ $customer->name }}</td>
                             <td class="px-4 py-2">
-                                <form action="{{ route('customers.edit', $customer) }}" method="GET" class="inline-block">
-                                    <button type="submit"
-                                        class="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg">Edit</button>
-                                </form>
+                                <a href="{{ route('customers.edit', $customer) }}"
+                                    class="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg">Edit</a>
                                 <form action="{{ route('customers.destroy', $customer) }}" method="POST"
                                     class="inline-block">
                                     @csrf

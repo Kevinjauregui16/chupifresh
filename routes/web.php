@@ -22,7 +22,6 @@ Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('c
 Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
 Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
-
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -31,3 +30,8 @@ Route::put('/products/{id}', [ProductController::class, 'update'])->name('produc
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+Route::get('/sales/{id}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{id}', [SaleController::class, 'update'])->name('sales.update');
+Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');

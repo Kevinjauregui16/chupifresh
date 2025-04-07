@@ -11,17 +11,17 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id'];
+    protected $fillable = ['customer_id', 'total'];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function products ()
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'sales_products')
-        ->withPivot('quantity', 'price')
-        ->withTimestamps();
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
     }
 }

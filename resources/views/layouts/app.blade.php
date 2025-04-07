@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name"theme-color" content="#3049D0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -37,7 +38,8 @@
         </div>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="bg-black bg-opacity-40 text-red-500 mb-4 text-lg font-semibold px-2 py-1 rounded-lg">
+            <button type="submit"
+                class="bg-black bg-opacity-40 text-red-500 mb-4 text-lg font-semibold px-2 py-1 rounded-lg">
                 Logout
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>

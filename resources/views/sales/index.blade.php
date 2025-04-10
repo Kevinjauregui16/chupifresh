@@ -15,6 +15,7 @@
                         <th class="px-4 py-2">Customer</th>
                         <th class="px-4 py-2">Products</th>
                         <th class="px-4 py-2">Total</th>
+                        <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Date Create</th>
                         <th class="px-4 py-2">Date Update</th>
                         <th class="px-4 py-2">Actions</th>
@@ -35,7 +36,7 @@
                             <td class="px-4 py-2">
                                 <div id="products-{{ $sale->id }}" class="hidden mt-2">
                                     @foreach ($sale->products as $product)
-                                        <p>{{ $product->name }} - Qty: {{ $product->pivot->quantity }} - P/U:
+                                        <p>{{ $product->name }} - Cant: {{ $product->pivot->quantity }} - P/U:
                                             ${{ $product->pivot->price }}</p>
                                     @endforeach
                                 </div>
@@ -44,6 +45,11 @@
                                     Productos</button>
                             </td>
                             <td class="px-4 py-2">${{ $sale->total }}</td>
+                            <td class="px-4 py-2 flex items-center justify-center gap-2">
+                                <span
+                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-green-500' : 'bg-red-500' }}"></span>
+                                {{ $sale->is_closed === 0 ? 'Open' : 'Closed' }}
+                            </td>
                             <td class="px-4 py-2">{{ $sale->created_at }}</td>
                             <td class="px-4 py-2">{{ $sale->updated_at }}</td>
                             <td class="px-4 py-2">

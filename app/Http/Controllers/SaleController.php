@@ -44,13 +44,17 @@ class SaleController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'products' => 'required|array|min:1',
             'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1'
+            'products.*.quantity' => 'required|integer|min:1',
+            'is_closed' => 'boolean'
         ]);
+
+        $isClosed = $request->has('is_closed') ? true : false;
 
         // Crear la venta con total = 0 (se actualizará luego)
         $sale = Sale::create([
             'customer_id' => $request->customer_id,
-            'total' => 0
+            'total' => 0,
+            'is_closed' => $isClosed
         ]);
 
         $total = 0;
@@ -60,9 +64,18 @@ class SaleController extends Controller
             $quantity = $productData['quantity'];
             $price = $product->price;
 
+            if ($product->quantity < $quantity) {
+                return back()->withErrors([
+                    'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
+                ]);
+            }
+
             // Calcular subtotal de este producto
             $subtotal = $price * $quantity;
             $total += $subtotal;
+
+            $product->quantity -= $quantity; // Reducir la cantidad en stock
+            $product->save(); // Guardar cambios en el producto
 
             // Asociar producto a la venta
             $sale->products()->attach($product->id, [
@@ -115,14 +128,20 @@ class SaleController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'products' => 'required|array|min:1',
             'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1'
+            'products.*.quantity' => 'required|integer|min:1',
+            'is_closed' => 'boolean'
         ]);
 
         $sale = Sale::findOrFail($id);
 
+        $oldProducts = $sale->products->keyBy('id');
+
+        $isClosed = $request->has('is_closed') ? true : false;
+
         // Actualizar el cliente
         $sale->update([
-            'customer_id' => $request->customer_id
+            'customer_id' => $request->customer_id,
+            'is_closed' => $isClosed
         ]);
 
         $total = 0;
@@ -139,7 +158,48 @@ class SaleController extends Controller
                 'quantity' => $quantity,
                 'price' => $price
             ];
+
+            // Verificar si la cantidad del producto ha cambiado
+            if (isset($oldProducts[$product->id])) {
+                $oldQuantity = $oldProducts[$product->id]->pivot->quantity;
+
+                if (isset($oldProducts[$product->id])) {
+                    $oldQuantity = $oldProducts[$product->id]->pivot->quantity;
+
+                    if ($quantity > $oldQuantity) {
+                        // El usuario quiere más productos → se deben descontar del stock
+                        $difference = $quantity - $oldQuantity;
+
+                        if ($product->quantity < $difference) {
+                            return back()->withErrors([
+                                'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
+                            ]);
+                        }
+
+                        $product->decrement('quantity', $difference);
+                    } elseif ($quantity < $oldQuantity) {
+                        // El usuario quiere menos productos → se devuelven al stock
+                        $difference = $oldQuantity - $quantity;
+                        $product->increment('quantity', $difference);
+                    }
+                } else {
+                    // Producto nuevo → descontar del stock
+                    if ($product->quantity < $quantity) {
+                        return back()->withErrors([
+                            'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
+                        ]);
+                    }
+
+                    $product->decrement('quantity', $quantity);
+                }
+            } else {
+                // Si el producto es nuevo en la venta, descontamos del stock
+                $product->decrement('quantity', $quantity);
+            }
+
+            $product->save();
         }
+
 
         // Sincronizar productos con cantidades y precios
         $sale->products()->sync($syncData);

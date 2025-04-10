@@ -36,14 +36,14 @@
             <x-linkNavbar href="{{ route('products.index') }}"> Products </x-linkNavbar>
             <x-linkNavbar href="{{ route('sales.index') }}"> Sales </x-linkNavbar>
         </div>
-        <form action="{{ route('logout') }}" method="POST">
+        {{-- <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
                 class="bg-black bg-opacity-40 text-red-500 mb-4 text-lg font-semibold px-2 py-1 rounded-lg">
                 Logout
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
-        </form>
+        </form> --}}
     </header>
 
     <!-- Contenido principal -->

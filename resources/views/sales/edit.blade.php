@@ -75,6 +75,20 @@
                     @endforeach
                 </div>
 
+                <div class="flex items-center mt-4 gap-3">
+                    <span id="toggleLabel" class="text-gray-700 font-medium">Open Sale</span>
+
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="is_closed" name="is_closed" value="1" class="sr-only peer"
+                            onchange="toggleLabelText()" {{ $sale->is_closed ? 'checked' : '' }}>
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 transition-colors">
+                        </div>
+                        <div
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-full transition-transform">
+                        </div>
+                    </label>
+                </div>
+
                 <!-- Botones -->
                 <div class="flex gap-4 mt-4">
                     <a href="{{ route('sales.index') }}"
@@ -130,6 +144,12 @@
                 return false;
             }
             return true;
+        }
+
+        function toggleLabelText() {
+            const checkbox = document.getElementById('is_closed');
+            const label = document.getElementById('toggleLabel');
+            label.textContent = checkbox.checked ? 'Close Sale' : 'Open Sale';
         }
     </script>
 @endsection

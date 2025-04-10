@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->decimal('total', 8, 2);
+            $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
     }

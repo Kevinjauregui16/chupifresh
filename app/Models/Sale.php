@@ -11,7 +11,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'total'];
+    protected $fillable = ['customer_id', 'total', 'is_closed'];
 
     public function customer()
     {

@@ -48,25 +48,41 @@
                             <p class="text-gray-700">Price: ${{ $product->price }}</p>
                             <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
 
+                            <!-- Mostrar un mensaje si no hay suficiente stock -->
+                            @if ($product->quantity <= 0)
+                                <p class="text-red-500 mt-1">Out of stock</p>
+                            @endif
+
                             <div class="flex items-center mt-2 gap-2">
                                 <!-- Checkbox para seleccionar el producto -->
                                 <input type="checkbox" name="products[{{ $product->id }}][id]" value="{{ $product->id }}"
                                     id="product_{{ $product->id }}" class="product-checkbox"
-                                    data-price="{{ $product->price }}"
+                                    data-price="{{ $product->price }}" data-stock="{{ $product->quantity }}"
                                     onchange="toggleQuantity({{ $product->id }}); updateTotal();">
 
 
                                 <!-- Input de cantidad (inicialmente deshabilitado) -->
                                 <input type="number" name="products[{{ $product->id }}][quantity]"
-                                    id="quantity_{{ $product->id }}"
-                                    class="w-full px-2 border rounded-lg quantity-input" placeholder="Quantity"
-                                    min="1" value="0" disabled onchange="updateTotal();">
+                                    id="quantity_{{ $product->id }}" class="w-full px-2 border rounded-lg quantity-input"
+                                    placeholder="Quantity" min="1" value="0" disabled onchange="updateTotal();">
                             </div>
                         </div>
                     @endforeach
                 </div>
 
+                <div class="flex items-center mt-4 gap-3">
+                    <span id="toggleLabel" class="text-gray-700 font-medium">Open Sale</span>
 
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="is_closed" name="is_closed" value="1" class="sr-only peer"
+                            onchange="toggleLabelText()">
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 transition-colors">
+                        </div>
+                        <div
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-full transition-transform">
+                        </div>
+                    </label>
+                </div>
 
                 <!-- Botón para enviar la venta -->
                 <div class="flex gap-4 mt-4">
@@ -82,10 +98,12 @@
         function toggleQuantity(productId) {
             const checkbox = document.getElementById(`product_${productId}`);
             const quantityInput = document.getElementById(`quantity_${productId}`);
+            const productStock = parseInt(checkbox.getAttribute('data-stock'));
 
             if (checkbox.checked) {
                 quantityInput.disabled = false;
                 if (quantityInput.value == 0) quantityInput.value = 1; // Establecer valor por defecto
+                quantityInput.setAttribute('max', productStock);
             } else {
                 quantityInput.disabled = true;
                 quantityInput.value = 0; // Reiniciar cantidad al desmarcar
@@ -122,10 +140,25 @@
                 alert('Please select at least one product.');
                 return false;
             }
+
+            // Verificar si hay cantidades seleccionadas mayores a 0 para los productos seleccionados
+            const invalidQuantity = [...checkboxes].some((checkbox) => {
+                const quantityInput = document.getElementById(`quantity_${checkbox.value}`);
+                return parseInt(quantityInput.value) <= 0;
+            });
+
+            if (invalidQuantity) {
+                alert('Please make sure the selected quantity is greater than 0 for all selected products.');
+                return false;
+            }
+
             return true;
         }
 
-        // Ejecutar al cargar la página
-        window.addEventListener('DOMContentLoaded', updateTotal);
+        function toggleLabelText() {
+            const checkbox = document.getElementById('is_closed');
+            const label = document.getElementById('toggleLabel');
+            label.textContent = checkbox.checked ? 'Close Sale' : 'Open Sale';
+        }
     </script>
 @endsection

@@ -10,12 +10,12 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'quantity'];
+    protected $fillable = ['name', 'cost', 'price', 'quantity'];
 
     public function sales()
     {
         return $this->belongsToMany(Sale::class, 'sales_products')
-            ->withPivot('quantity', 'price')
+            ->withPivot('quantity', 'cost', 'price')
             ->withTimestamps();
     }
 }

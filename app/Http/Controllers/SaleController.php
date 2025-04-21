@@ -62,6 +62,7 @@ class SaleController extends Controller
         foreach ($request->products as $productData) {
             $product = Product::find($productData['id']);
             $quantity = $productData['quantity'];
+            $cost = $product->cost; // Costo unitario en el momento de la venta
             $price = $product->price;
 
             if ($product->quantity < $quantity) {
@@ -80,6 +81,7 @@ class SaleController extends Controller
             // Asociar producto a la venta
             $sale->products()->attach($product->id, [
                 'quantity' => $quantity,
+                'cost' => $product->cost, // Costo unitario en el momento de la venta
                 'price' => $price
             ]);
 
@@ -133,12 +135,10 @@ class SaleController extends Controller
         ]);
 
         $sale = Sale::findOrFail($id);
-
         $oldProducts = $sale->products->keyBy('id');
+        $isClosed = $request->has('is_closed');
 
-        $isClosed = $request->has('is_closed') ? true : false;
-
-        // Actualizar el cliente
+        // Actualizar cliente y estado
         $sale->update([
             'customer_id' => $request->customer_id,
             'is_closed' => $isClosed
@@ -147,67 +147,68 @@ class SaleController extends Controller
         $total = 0;
         $syncData = [];
 
+        $newProductIds = collect($request->products)->pluck('id')->toArray();
+
         foreach ($request->products as $productData) {
-            $product = Product::find($productData['id']);
+            $product = Product::findOrFail($productData['id']);
             $quantity = $productData['quantity'];
+            $cost = $product->cost;
             $price = $product->price;
             $subtotal = $price * $quantity;
             $total += $subtotal;
 
             $syncData[$product->id] = [
                 'quantity' => $quantity,
+                'cost' => $cost,
                 'price' => $price
             ];
 
-            // Verificar si la cantidad del producto ha cambiado
             if (isset($oldProducts[$product->id])) {
+                // Producto ya estaba en la venta
                 $oldQuantity = $oldProducts[$product->id]->pivot->quantity;
 
-                if (isset($oldProducts[$product->id])) {
-                    $oldQuantity = $oldProducts[$product->id]->pivot->quantity;
-
-                    if ($quantity > $oldQuantity) {
-                        // El usuario quiere más productos → se deben descontar del stock
-                        $difference = $quantity - $oldQuantity;
-
-                        if ($product->quantity < $difference) {
-                            return back()->withErrors([
-                                'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
-                            ]);
-                        }
-
-                        $product->decrement('quantity', $difference);
-                    } elseif ($quantity < $oldQuantity) {
-                        // El usuario quiere menos productos → se devuelven al stock
-                        $difference = $oldQuantity - $quantity;
-                        $product->increment('quantity', $difference);
-                    }
-                } else {
-                    // Producto nuevo → descontar del stock
-                    if ($product->quantity < $quantity) {
+                if ($quantity > $oldQuantity) {
+                    $diff = $quantity - $oldQuantity;
+                    if ($product->quantity < $diff) {
                         return back()->withErrors([
                             'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
                         ]);
                     }
-
-                    $product->decrement('quantity', $quantity);
+                    $product->decrement('quantity', $diff);
+                } elseif ($quantity < $oldQuantity) {
+                    $diff = $oldQuantity - $quantity;
+                    $product->increment('quantity', $diff);
                 }
             } else {
-                // Si el producto es nuevo en la venta, descontamos del stock
+                // Producto nuevo → verificar y descontar stock
+                if ($product->quantity < $quantity) {
+                    return back()->withErrors([
+                        'quantity' => "No hay suficiente stock para el producto: {$product->name}. Solo hay {$product->quantity} unidades disponibles."
+                    ]);
+                }
                 $product->decrement('quantity', $quantity);
             }
 
             $product->save();
         }
 
+        // Reintegrar al stock productos eliminados de la venta
+        foreach ($oldProducts as $oldProductId => $oldProduct) {
+            if (!in_array($oldProductId, $newProductIds)) {
+                $product = Product::find($oldProductId);
+                $quantityToRestore = $oldProduct->pivot->quantity;
+                $product->increment('quantity', $quantityToRestore);
+                $product->save();
+            }
+        }
 
-        // Sincronizar productos con cantidades y precios
+        // Sincronizar productos
         $sale->products()->sync($syncData);
 
         // Actualizar total
         $sale->update(['total' => $total]);
 
-        return redirect()->route('sales.index')->with('success', 'Sale updated successfully!');
+        return redirect()->route('sales.index')->with('success', '¡Venta actualizada con éxito!');
     }
 
 
@@ -216,7 +217,13 @@ class SaleController extends Controller
      */
     public function destroy(string $id)
     {
-        $sale = Sale::findOrFail($id);
+        $sale = Sale::with('products')->findOrFail($id);
+
+        foreach ($sale->products as $product) {
+            $quantitySold = $product->pivot->quantity;
+            $product->increment('quantity', $quantitySold); // Reintegrar al stock
+        }
+
         $sale->products()->detach(); // Desasociar productos
         $sale->delete(); // Eliminar la venta
 

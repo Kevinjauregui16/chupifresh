@@ -32,12 +32,14 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'cost' => 'required|numeric|min:0|max:999999.99',
             'price' => 'required|numeric|min:0|max:999999.99',
             'quantity' => 'required|integer|min:1|max:10000',
         ]);
 
         Product::create([
             'name' => $request->name,
+            'cost' => $request->cost,
             'price' => $request->price,
             'quantity' => $request->quantity
         ]);
@@ -70,6 +72,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'cost' => 'required|numeric|min:0|max:999999.99',
             'price' => 'required|numeric|min:0|max:999999.99',
             'quantity' => 'required|integer|min:1|max:10000',
         ]);
@@ -77,6 +80,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->update([
             'name' => $request->name,
+            'cost' => $request->cost,
             'price' => $request->price,
             'quantity' => $request->quantity
         ]);

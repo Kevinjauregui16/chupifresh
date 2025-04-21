@@ -2,7 +2,7 @@
 @section('title', 'Customers')
 
 @section('content')
-    <div class="flex flex-col justify-start bg-gray-100 w-full h-screen">
+    <div class="flex flex-col justify-start w-full h-screen">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
             <p class="text-3xl font-bold">List Customers</p>
             <a href="{{ route('customers.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">New +</a>

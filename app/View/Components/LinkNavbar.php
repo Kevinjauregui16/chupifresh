@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 class LinkNavbar extends Component
 {
     public $href;
+    public $icon;
     /**
      * Create a new component instance.
      */
-    public function __construct($href = '#')
+    public function __construct($href = '#', $icon = null)
     {
        $this->href = $href;
+       $this->icon = $icon;
     }
 
     /**

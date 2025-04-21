@@ -4,7 +4,8 @@
 @section('content')
     <div class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white shadow-md rounded-lg p-4 flex items-center">
+
+            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
                     <h2 class="text-lg font-bold mb-2">Customers</h2>
                     <p class="text-3xl font-semibold text-yellow-500">{{ $customers->count() }}</p>
@@ -14,7 +15,7 @@
                 </div>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg p-4 flex items-center">
+            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
                     <h2 class="text-lg font-bold mb-2">Products</h2>
                     <p class="text-3xl font-semibold text-primary">{{ $products->count() }}</p>
@@ -24,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg p-4 flex items-center">
+            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
                     <h2 class="text-lg font-bold mb-2">Product Stock</h2>
                     <p class="text-3xl font-semibold text-red-500">{{ $totalProducts }}</p>
@@ -34,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg p-4 flex items-center">
+            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
                     <h2 class="text-lg font-bold mb-2">Total Sales</h2>
                     <p class="text-3xl font-semibold text-green-500">${{ $sales }}</p>
@@ -43,6 +44,83 @@
                     <i class="fa-solid fa-wallet fa-3x"></i>
                 </div>
             </div>
+
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center justify-center">
+                <h2 class="text-lg font-bold mb-4">Estatus de ventas</h2>
+                <canvas id="salesPieChart"></canvas>
+            </div>
+
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
+                <h2 class="text-lg font-bold mb-4">Productos con bajo stock</h2>
+                <canvas id="lowStockChart" height="250" class="m-auto"></canvas>
+            </div>
+
+
+
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('salesPieChart').getContext('2d');
+        var salesPieChart = new Chart(ctx, {
+            type: 'doughnut', // Tipo de gráfico
+            data: {
+                labels: ['Cerradas', 'Abiertas'],
+                datasets: [{
+                    label: 'Sales Status',
+                    data: [{{ $closedSalesCount }},
+                        {{ $openSalesCount }}
+                    ], // Valores de ventas cerradas y abiertas
+                    backgroundColor: ['#f87171', '#34d399'], // Colores para los segmentos
+                    borderColor: ['#fff', '#fff'], // Bordes blancos
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const lowStockCtx = document.getElementById('lowStockChart').getContext('2d');
+        const lowStockChart = new Chart(lowStockCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($lowStockLabels) !!},
+                datasets: [{
+                    label: 'Stock',
+                    data: {!! json_encode($lowStockQuantities) !!},
+                    backgroundColor: '#fde010'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
 @endsection

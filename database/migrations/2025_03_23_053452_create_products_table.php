@@ -9,6 +9,7 @@ return new class extends Migration {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->decimal('cost', 8, 2); // Costo de producción
             $table->decimal('price', 8, 2);
             $table->integer('quantity'); // Cantidad disponible
             $table->timestamps();

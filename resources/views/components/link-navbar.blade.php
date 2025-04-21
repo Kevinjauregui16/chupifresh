@@ -1,6 +1,7 @@
 <a href="{{ $href }}" @class([
-    'text-white text-xl text-center font-bold cursor-pointer hover:bg-black hover:bg-opacity-40 py-3 w-full',
-    'bg-black bg-opacity-40' => request()->url() === $href,
+    'flex items-center text-gray-300 text-xl cursor-pointer py-3 w-full border-l-4 border-primary pl-8 gap-4',
+    'border-white font-black text-white' => request()->url() === $href,
 ])>
-    {{ $slot }}
+    <i class="fa-solid fa-{{ $icon }} fa-lg"></i>
+    <span>{{ $slot }}</span>
 </a>

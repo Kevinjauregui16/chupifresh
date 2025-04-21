@@ -24,6 +24,15 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="cost" class="block text-gray-700 font-medium">Cost:</label>
+                    <input type="number" id="cost" name="cost" value="{{ old('cost', $product->cost) }}"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+                    @error('cost')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label for="price" class="block text-gray-700 font-medium">Price:</label>
                     <input type="number" id="price" name="price" value="{{ old('price', $product->price) }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">

@@ -15,8 +15,23 @@ class HomeController extends Controller
         $customers = Customer::all();
         $products = Product::all();
         $totalProducts = Product::sum('quantity');
+        $lowStockProducts = Product::where('quantity', '<=', 10)->get();
+        $lowStockLabels = $lowStockProducts->pluck('name');
+        $lowStockQuantities = $lowStockProducts->pluck('quantity');
         $sales = Sale::sum('total');
+        $closedSalesCount = Sale::where('is_closed', true)->count();
+        $openSalesCount = Sale::where('is_closed', false)->count();
 
-        return view('home.index', compact('customers', 'products', 'totalProducts', 'sales'));
+        return view('home.index', compact(
+            'customers',
+            'products',
+            'totalProducts',
+            'lowStockProducts',
+            'lowStockLabels',
+            'lowStockQuantities',
+            'sales',
+            'closedSalesCount',
+            'openSalesCount'
+        ));
     }
 }

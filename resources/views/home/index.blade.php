@@ -51,10 +51,14 @@
             </div>
 
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
-                <h2 class="text-lg font-bold mb-4">Productos con bajo stock</h2>
+                <h2 class="text-lg font-bold mb-4">Productos con - stock</h2>
                 <canvas id="lowStockChart" height="250" class="m-auto"></canvas>
             </div>
 
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
+                <h2 class="text-lg font-bold mb-4">Productos con + stock</h2>
+                <canvas id="highStockChart" height="250" class="m-auto"></canvas>
+            </div>
 
 
         </div>
@@ -72,7 +76,7 @@
                     data: [{{ $closedSalesCount }},
                         {{ $openSalesCount }}
                     ], // Valores de ventas cerradas y abiertas
-                    backgroundColor: ['#34d399', '#f87171' ], // Colores para los segmentos
+                    backgroundColor: ['#34d399', '#f87171'], // Colores para los segmentos
                     borderColor: ['#fff', '#fff'], // Bordes blancos
                     borderWidth: 1
                 }]
@@ -122,5 +126,34 @@
                 }
             }
         });
+
+        const highStockCtx = document.getElementById('highStockChart').getContext('2d');
+        const highStockChart = new Chart(highStockCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($highStockLabels) !!},
+                datasets: [{
+                    label: 'Stock',
+                    data: {!! json_encode($highStockQuantities) !!},
+                    backgroundColor: '#22c55e'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        })
     </script>
 @endsection

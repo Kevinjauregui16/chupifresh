@@ -2,7 +2,7 @@
 @section('title', 'Sales')
 
 @section('content')
-    <div class="flex flex-col justify-start w-full h-screen mt-6">
+    <div class="flex flex-col justify-start w-full h-screen pt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
             <p class="text-3xl font-bold">Ventas</p>
             <a href="{{ route('sales.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">Nueva +</a>
@@ -16,15 +16,15 @@
                         <th class="px-4 py-2">Productos</th>
                         <th class="px-4 py-2">Total</th>
                         <th class="px-4 py-2">Estado</th>
-                        <th class="px-4 py-2">Fecha creacion</th>
-                        <th class="px-4 py-2">Ultima edicion</th>
+                        <th class="px-4 py-2">Fecha creación</th>
+                        <th class="px-4 py-2">Ultima edición</th>
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
                 @if ($sales->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="7" class="text-center text-amber-500 text-lg py-4">No sales found.</td>
+                            <td colspan="7" class="text-center text-amber-500 text-lg py-4">Sin ventas aún.</td>
                         </tr>
                     </tbody>
                 @endif

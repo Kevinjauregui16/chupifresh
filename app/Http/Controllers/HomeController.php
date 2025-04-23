@@ -18,6 +18,9 @@ class HomeController extends Controller
         $lowStockProducts = Product::where('quantity', '<=', 10)->get();
         $lowStockLabels = $lowStockProducts->pluck('name');
         $lowStockQuantities = $lowStockProducts->pluck('quantity');
+        $highStockProducts = Product::where('quantity', '>=', 30)->get();
+        $highStockLabels = $highStockProducts->pluck('name');
+        $highStockQuantities = $highStockProducts->pluck('quantity');
         $sales = Sale::sum('total');
         $closedSalesCount = Sale::where('is_closed', true)->count();
         $openSalesCount = Sale::where('is_closed', false)->count();
@@ -29,6 +32,9 @@ class HomeController extends Controller
             'lowStockProducts',
             'lowStockLabels',
             'lowStockQuantities',
+            'highStockProducts',
+            'highStockLabels',
+            'highStockQuantities',
             'sales',
             'closedSalesCount',
             'openSalesCount'

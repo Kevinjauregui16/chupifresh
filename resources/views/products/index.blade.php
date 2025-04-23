@@ -2,7 +2,7 @@
 @section('title', 'Products')
 
 @section('content')
-    <div class="flex flex-col justify-start w-full h-screen mt-6">
+    <div class="flex flex-col justify-start w-full h-screen pt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
             <p class="text-3xl font-bold">Productos</p>
             <a href="{{ route('products.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">Nuevo +</a>
@@ -22,7 +22,7 @@
                 @if ($products->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="5" class="text-center text-amber-500 text-lg py-4">No products found.</td>
+                            <td colspan="5" class="text-center text-amber-500 text-lg py-4">Sin productos aún.</td>
                         </tr>
                     </tbody>
                 @else

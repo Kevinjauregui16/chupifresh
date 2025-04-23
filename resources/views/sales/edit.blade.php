@@ -76,7 +76,6 @@
                 </div>
 
                 <div class="flex items-center mt-4 gap-3">
-                    <span id="toggleLabel" class="text-gray-700 font-medium">Pendiente</span>
 
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="is_closed" name="is_closed" value="1" class="sr-only peer"
@@ -87,6 +86,7 @@
                             class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-full transition-transform">
                         </div>
                     </label>
+                    <span id="toggleLabel" class="text-gray-700 font-medium">Cuenta Pendiente</span>
                 </div>
 
                 <!-- Botones -->
@@ -149,7 +149,7 @@
         function toggleLabelText() {
             const checkbox = document.getElementById('is_closed');
             const label = document.getElementById('toggleLabel');
-            label.textContent = checkbox.checked ? 'Pagada' : 'Pendiente';
+            label.textContent = checkbox.checked ? 'Cuenta Pagada' : 'Cuenta Pendiente';
         }
     </script>
 @endsection

@@ -7,7 +7,7 @@
 
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
-                    <h2 class="text-lg font-bold mb-2">Customers</h2>
+                    <h2 class="text-lg font-bold mb-2">Vendedores</h2>
                     <p class="text-3xl font-semibold text-yellow-500">{{ $customers->count() }}</p>
                 </div>
                 <div class="w-1/2 flex justify-center items-center border-r-4 border-yellow-500">
@@ -17,7 +17,7 @@
 
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
-                    <h2 class="text-lg font-bold mb-2">Products</h2>
+                    <h2 class="text-lg font-bold mb-2">Productos</h2>
                     <p class="text-3xl font-semibold text-primary">{{ $products->count() }}</p>
                 </div>
                 <div class="w-1/2 flex justify-center items-center border-r-4 border-primary">
@@ -27,7 +27,7 @@
 
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
-                    <h2 class="text-lg font-bold mb-2">Product Stock</h2>
+                    <h2 class="text-lg font-bold mb-2">Stock</h2>
                     <p class="text-3xl font-semibold text-red-500">{{ $totalProducts }}</p>
                 </div>
                 <div class="w-1/2 flex justify-center items-center border-r-4 border-red-500">
@@ -37,7 +37,7 @@
 
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
-                    <h2 class="text-lg font-bold mb-2">Total Sales</h2>
+                    <h2 class="text-lg font-bold mb-2">Ventas</h2>
                     <p class="text-3xl font-semibold text-green-500">${{ $sales }}</p>
                 </div>
                 <div class="w-1/2 flex justify-center items-center border-r-4 border-green-500">
@@ -46,7 +46,7 @@
             </div>
 
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center justify-center">
-                <h2 class="text-lg font-bold mb-4">Estatus de ventas</h2>
+                <h2 class="text-lg font-bold mb-4">Estados de ventas</h2>
                 <canvas id="salesPieChart"></canvas>
             </div>
 
@@ -66,13 +66,13 @@
         var salesPieChart = new Chart(ctx, {
             type: 'doughnut', // Tipo de gráfico
             data: {
-                labels: ['Cerradas', 'Abiertas'],
+                labels: ['Pagadas', 'Pendientes'],
                 datasets: [{
                     label: 'Sales Status',
                     data: [{{ $closedSalesCount }},
                         {{ $openSalesCount }}
                     ], // Valores de ventas cerradas y abiertas
-                    backgroundColor: ['#f87171', '#34d399'], // Colores para los segmentos
+                    backgroundColor: ['#34d399', '#f87171' ], // Colores para los segmentos
                     borderColor: ['#fff', '#fff'], // Bordes blancos
                     borderWidth: 1
                 }]

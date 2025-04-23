@@ -2,23 +2,23 @@
 @section('title', 'Sales')
 
 @section('content')
-    <div class="flex flex-col justify-start w-full h-screen">
+    <div class="flex flex-col justify-start w-full h-screen mt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
-            <p class="text-3xl font-bold">List Sales</p>
-            <a href="{{ route('sales.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">New +</a>
+            <p class="text-3xl font-bold">Ventas</p>
+            <a href="{{ route('sales.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">Nueva +</a>
         </div>
         <div class="bg-white shadow-xl rounded-xl p-4 w-[90%] mx-auto">
             <table class="table-auto w-full">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="px-4 py-2">Id</th>
-                        <th class="px-4 py-2">Customer</th>
-                        <th class="px-4 py-2">Products</th>
+                        <th class="px-4 py-2">Vendedor</th>
+                        <th class="px-4 py-2">Productos</th>
                         <th class="px-4 py-2">Total</th>
-                        <th class="px-4 py-2">Status</th>
-                        <th class="px-4 py-2">Date Create</th>
-                        <th class="px-4 py-2">Date Update</th>
-                        <th class="px-4 py-2">Actions</th>
+                        <th class="px-4 py-2">Estado</th>
+                        <th class="px-4 py-2">Fecha creacion</th>
+                        <th class="px-4 py-2">Ultima edicion</th>
+                        <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
                 @if ($sales->isEmpty())
@@ -34,10 +34,10 @@
                             <td class="px-4 py-2">{{ $sale->id }}</td>
                             <td class="px-4 py-2">{{ $sale->customer->name }}</td>
                             <td class="px-4 py-2">
-                                <div id="products-{{ $sale->id }}" class="hidden mt-2">
+                                <div id="products-{{ $sale->id }}" class="hidden">
                                     @foreach ($sale->products as $product)
-                                        <p>{{ $product->name }} - Cant: {{ $product->pivot->quantity }} - P/U:
-                                            ${{ $product->pivot->price }}</p>
+                                        <p>{{ $product->pivot->quantity }} {{ $product->name }} -
+                                            ${{ $product->pivot->price }} c/u</p>
                                     @endforeach
                                 </div>
                                 <button id="toggle-btn-{{ $sale->id }}" onclick="toggleProducts({{ $sale->id }})"
@@ -47,19 +47,20 @@
                             <td class="px-4 py-2">${{ $sale->total }}</td>
                             <td class="px-4 py-2 flex items-center justify-center gap-2">
                                 <span
-                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-green-500' : 'bg-red-500' }}"></span>
-                                {{ $sale->is_closed === 0 ? 'Open' : 'Closed' }}
+                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-red-500' : 'bg-green-500' }}"></span>
+                                {{ $sale->is_closed === 0 ? 'Pendiente' : 'Pagada' }}
                             </td>
                             <td class="px-4 py-2">{{ $sale->created_at }}</td>
                             <td class="px-4 py-2">{{ $sale->updated_at }}</td>
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 gap-2 flex justify-center">
                                 <a href="{{ route('sales.edit', $sale->id) }}"
-                                    class="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg">Edit</a>
+                                    class="text-blue-500 hover:text-blue-300 transition-colors p-1"><i
+                                        class="fa-solid fa-pencil"></i></a>
                                 <form action="{{ route('sales.destroy', $sale) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white text-sm px-4 py-1 rounded-lg">Delete</button>
+                                    <button type="submit" class="text-red-500 hover:text-red-300 transition-colors p-1"><i
+                                            class="fa-solid fa-trash-can"></i></button>
                                 </form>
                             </td>
                         </tr>

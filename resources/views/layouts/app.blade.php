@@ -32,10 +32,10 @@
             <h1 class="text-2xl text-primary text-center font-black">LlamBoard</h1>
         </div>
         <div class="h-4/5 w-full flex flex-col justify-start gap-1 bg-primary pt-10 rounded-tr-[110px]">
-            <x-linkNavbar href="{{ route('home.index') }}" icon="{{ 'house' }}"> Home </x-linkNavbar>
-            <x-linkNavbar href="{{ route('customers.index') }}" icon="{{ 'users' }}"> Customers </x-linkNavbar>
-            <x-linkNavbar href="{{ route('products.index') }}" icon="{{ 'tag' }}"> Products </x-linkNavbar>
-            <x-linkNavbar href="{{ route('sales.index') }}" icon="{{ 'cart-shopping' }}"> Sales </x-linkNavbar>
+            <x-linkNavbar href="{{ route('home.index') }}" icon="{{ 'house' }}"> Inicio </x-linkNavbar>
+            <x-linkNavbar href="{{ route('customers.index') }}" icon="{{ 'users' }}"> Vendedores </x-linkNavbar>
+            <x-linkNavbar href="{{ route('products.index') }}" icon="{{ 'tag' }}"> Productos </x-linkNavbar>
+            <x-linkNavbar href="{{ route('sales.index') }}" icon="{{ 'cart-shopping' }}"> Ventas </x-linkNavbar>
         </div>
         {{-- <form action="{{ route('logout') }}" method="POST">
             @csrf

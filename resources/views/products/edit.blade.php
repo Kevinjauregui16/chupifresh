@@ -4,7 +4,7 @@
 @section('content')
     <div class="flex justify-center items-center h-screen">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
-            <h2 class="text-xl font-bold mb-4">Product Edit</h2>
+            <h2 class="text-xl font-bold mb-4">Editar producto</h2>
 
             @if (session('success'))
                 <p class="text-green-600 mb-4">{{ session('success') }}</p>
@@ -15,7 +15,7 @@
                 @method('PUT')
 
                 <div class="mb-4">
-                    <label for="name" class="block text-gray-700 font-medium">Name:</label>
+                    <label for="name" class="block text-gray-700 font-medium">Nombre:</label>
                     <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('name')
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="cost" class="block text-gray-700 font-medium">Cost:</label>
+                    <label for="cost" class="block text-gray-700 font-medium">Costo:</label>
                     <input type="number" id="cost" name="cost" value="{{ old('cost', $product->cost) }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('cost')
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="price" class="block text-gray-700 font-medium">Price:</label>
+                    <label for="price" class="block text-gray-700 font-medium">Precio:</label>
                     <input type="number" id="price" name="price" value="{{ old('price', $product->price) }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('price')
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="quantity" class="block text-gray-700 font-medium">Quantity:</label>
+                    <label for="quantity" class="block text-gray-700 font-medium">Stock:</label>
                     <input type="number" id="quantity" name="quantity" value="{{ old('quantity', $product->quantity) }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('quantity')
@@ -52,9 +52,9 @@
                 <div class="flex gap-4">
                     <a href="{{ route('products.index') }}"
                         class="w-full bg-amber-500 text-white px-4 py-2
-                    rounded-lg text-center"">Cancel</a>
+                    rounded-lg text-center"">Cancelar</a>
                     <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">
-                        Save
+                        Guardar
                     </button>
                 </div>
             </form>

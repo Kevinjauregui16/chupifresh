@@ -4,7 +4,7 @@
 @section('content')
     <div class="flex justify-center items-center h-screen">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
-            <h2 class="text-xl font-bold mb-4">Edit Sale</h2>
+            <h2 class="text-xl font-bold mb-4">Editar venta</h2>
 
             @if (session('success'))
                 <p class="text-green-600 mb-4">{{ session('success') }}</p>
@@ -17,10 +17,10 @@
                 <!-- Select para clientes -->
                 <div class="mb-4 flex justify-between">
                     <div>
-                        <label for="customer" class="block text-gray-700 font-medium">Select Customer:</label>
+                        <label for="customer" class="block text-gray-700 font-medium">Vendedor:</label>
                         <select id="customer" name="customer_id"
                             class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
-                            <option value="" disabled>Select a customer</option>
+                            <option value="" disabled>Selecciona un vendedor</option>
                             @foreach ($customers as $customer)
                                 <option value="{{ $customer->id }}"
                                     {{ $customer->id === $sale->customer_id ? 'selected' : '' }}>
@@ -57,7 +57,7 @@
 
                         <div class="border p-4 rounded-lg shadow-md">
                             <h4 class="font-bold">{{ $product->name }}</h4>
-                            <p class="text-gray-700">Price: ${{ $product->price }}</p>
+                            <p class="text-gray-700">Precio: ${{ $product->price }}</p>
                             <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
 
                             <div class="flex items-center gap-2 mt-2">
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="flex items-center mt-4 gap-3">
-                    <span id="toggleLabel" class="text-gray-700 font-medium">Open Sale</span>
+                    <span id="toggleLabel" class="text-gray-700 font-medium">Pendiente</span>
 
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="is_closed" name="is_closed" value="1" class="sr-only peer"
@@ -92,8 +92,8 @@
                 <!-- Botones -->
                 <div class="flex gap-4 mt-4">
                     <a href="{{ route('sales.index') }}"
-                        class="w-full bg-amber-500 text-white px-4 py-2 rounded-lg text-center">Cancel</a>
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">Update Sale</button>
+                        class="w-full bg-amber-500 text-white px-4 py-2 rounded-lg text-center">Cancelar</a>
+                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
                 </div>
             </form>
         </div>
@@ -149,7 +149,7 @@
         function toggleLabelText() {
             const checkbox = document.getElementById('is_closed');
             const label = document.getElementById('toggleLabel');
-            label.textContent = checkbox.checked ? 'Close Sale' : 'Open Sale';
+            label.textContent = checkbox.checked ? 'Pagada' : 'Pendiente';
         }
     </script>
 @endsection

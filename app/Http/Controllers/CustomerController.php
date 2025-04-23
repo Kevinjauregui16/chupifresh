@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Sale;
 
 class CustomerController extends Controller
 {
@@ -82,8 +83,15 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);
+
+        if($customer->sales()->exists()) {
+            return redirect()->route('customers.index')
+            ->with('error', 'No se puede eliminar el cliente porque tiene ventas asociadas.');
+        }
+
         $customer->delete();
 
-        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
+        return redirect()->route('customers.index')
+        ->with('success', 'Customer deleted successfully.');
     }
 }

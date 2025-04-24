@@ -33,6 +33,9 @@
                         @enderror
                     </div>
                     <div>
+                        <label for="total" class="block text-gray-700 font-medium">Unidades:</label>
+                        <input type="text" id="units" class="w-full px-4 py-2 border rounded-lg bg-green-200"
+                            value="{{ $sale->units }}" readonly disabled>
                         <label for="total" class="block text-gray-700 font-medium">Total:</label>
                         <input type="text" id="total" class="w-full px-4 py-2 border rounded-lg bg-green-200"
                             value="${{ $sale->total }}" readonly disabled>
@@ -117,6 +120,7 @@
 
         function updateTotal() {
             let total = 0;
+            let units = 0;
 
             const checkboxes = document.querySelectorAll('.product-checkbox');
 
@@ -128,6 +132,7 @@
                 if (checkbox.checked && !isNaN(price)) {
                     const quantity = parseInt(quantityInput.value) || 0;
                     total += price * quantity;
+                    units += quantity;
                 }
             });
 
@@ -135,6 +140,8 @@
             document.getElementById('total').value = `$ ${total.toFixed(2)}`;
             // Actualizar el input hidden que se envía
             document.getElementById('total_hidden').value = total.toFixed(2);
+            // Actualizar el input de unidades
+            document.getElementById('units').value = units;
         }
 
         function validateForm() {

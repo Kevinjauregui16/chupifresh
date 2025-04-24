@@ -14,6 +14,7 @@
                         <th class="px-4 py-2">Id</th>
                         <th class="px-4 py-2">Vendedor</th>
                         <th class="px-4 py-2">Productos</th>
+                        <th class="px-4 py-2">Unidades</th>
                         <th class="px-4 py-2">Total</th>
                         <th class="px-4 py-2">Estado</th>
                         <th class="px-4 py-2">Fecha creación</th>
@@ -24,7 +25,7 @@
                 @if ($sales->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="7" class="text-center text-amber-500 text-lg py-4">Sin ventas aún.</td>
+                            <td colspan="9" class="text-center text-amber-500 text-lg py-4">Sin ventas aún.</td>
                         </tr>
                     </tbody>
                 @endif
@@ -36,18 +37,20 @@
                             <td class="px-4 py-2">
                                 <div id="products-{{ $sale->id }}" class="hidden">
                                     @foreach ($sale->products as $product)
-                                        <p>{{ $product->pivot->quantity }} {{ $product->name }} -
-                                            ${{ $product->pivot->price }} c/u</p>
+                                        <p class="border-y py-1 px-2 bg-yellow-50">{{ $product->pivot->quantity }}
+                                            {{ $product->name }}</p>
+                                        {{-- -${{ $product->pivot->price }} c/u --}}
                                     @endforeach
                                 </div>
                                 <button id="toggle-btn-{{ $sale->id }}" onclick="toggleProducts({{ $sale->id }})"
                                     class="text-blue-500">Ver
                                     Productos</button>
                             </td>
+                            <td class="px-4 py-2">{{ $sale->units }}</td>
                             <td class="px-4 py-2">${{ $sale->total }}</td>
                             <td class="px-4 py-2 flex items-center justify-center gap-2">
                                 <span
-                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-red-500' : 'bg-green-500' }}"></span>
+                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-yellow-300' : 'bg-green-500' }}"></span>
                                 {{ $sale->is_closed === 0 ? 'Pendiente' : 'Pagada' }}
                             </td>
                             <td class="px-4 py-2">{{ $sale->created_at }}</td>

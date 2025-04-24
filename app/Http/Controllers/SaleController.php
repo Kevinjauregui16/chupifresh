@@ -46,13 +46,17 @@ class SaleController extends Controller
             'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'is_closed' => 'boolean'
+        ],[
+            'customer_id.required' => 'Debes seleccionar un vendedor para la venta.',
         ]);
 
         $isClosed = $request->has('is_closed') ? true : false;
+        $units = array_sum(array_column($request->products, 'quantity'));
 
         // Crear la venta con total = 0 (se actualizará luego)
         $sale = Sale::create([
             'customer_id' => $request->customer_id,
+            'units' => $units,
             'total' => 0,
             'is_closed' => $isClosed
         ]);
@@ -137,10 +141,11 @@ class SaleController extends Controller
         $sale = Sale::findOrFail($id);
         $oldProducts = $sale->products->keyBy('id');
         $isClosed = $request->has('is_closed');
+        $units = array_sum(array_column($request->products, 'quantity'));
 
-        // Actualizar cliente y estado
         $sale->update([
             'customer_id' => $request->customer_id,
+            'units' => $units,
             'is_closed' => $isClosed
         ]);
 

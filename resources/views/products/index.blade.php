@@ -22,19 +22,20 @@
                 @if ($products->isEmpty())
                     <tbody>
                         <tr>
-                            <td colspan="5" class="text-center text-amber-500 text-lg py-4">Sin productos aún.</td>
+                            <td colspan="6" class="text-center text-amber-500 text-lg py-4">Sin productos aún.</td>
                         </tr>
                     </tbody>
                 @else
                 @endif
                 <tbody>
                     @foreach ($products as $product)
-                        <tr class="text-center border-b border-gray-200">
+                        <tr
+                            class="text-center border-b border-gray-200  ">
                             <td class="px-4 py-2">{{ $product->id }}</td>
                             <td class="px-4 py-2">{{ $product->name }}</td>
                             <td class="px-4 py-2">${{ $product->cost }}</td>
                             <td class="px-4 py-2">${{ $product->price }}</td>
-                            <td class="px-4 py-2">{{ $product->quantity }}</td>
+                            <td class="px-4 py-2 {{ $product->quantity <= 10 ? 'text-red-500 font-bold' : ($product->quantity > 30 ? 'text-green-500 font-bold' : '') }}">{{ $product->quantity }}</td>
                             <td class="px-4 py-2">
                                 <a href="{{ route('products.edit', $product) }}"
                                     class="text-blue-500 hover:text-blue-300 transition-colors p-1"><i

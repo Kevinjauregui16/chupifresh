@@ -27,7 +27,7 @@
 <body class="flex h-screen">
     <!-- Header en la parte izquierda -->
     <header class=" w-72 h-full flex flex-col items-center justify-center">
-        <div class="h-1/5 flex justify-center items-center">
+        <div class="h-1/5 flex items-center">
             <img src="{{ asset('llama.png') }}" alt="logo" class="w-16 h-16 bg-white rounded-full">
             <h1 class="text-2xl text-primary text-center font-black">LlamBoard</h1>
         </div>

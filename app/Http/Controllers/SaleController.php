@@ -102,7 +102,7 @@ class SaleController extends Controller
 
         Log::info("Venta creada con éxito", ['sale_id' => $sale->id, 'total' => $total]);
 
-        return redirect()->route('sales.index')->with('success', 'Sale created successfully!');
+        return redirect()->route('sales.index')->with('success', '!Venta creada exitosamente!');
     }
 
     /**
@@ -213,7 +213,7 @@ class SaleController extends Controller
         // Actualizar total
         $sale->update(['total' => $total]);
 
-        return redirect()->route('sales.index')->with('success', '¡Venta actualizada con éxito!');
+        return redirect()->route('sales.index')->with('success', '¡Venta actualizada exitosamente!');
     }
 
 
@@ -232,6 +232,6 @@ class SaleController extends Controller
         $sale->products()->detach(); // Desasociar productos
         $sale->delete(); // Eliminar la venta
 
-        return redirect()->route('sales.index')->with('success', 'Sale deleted successfully!');
+        return redirect()->route('sales.index')->with('success', '!Venta eliminada exitosamente!');
     }
 }

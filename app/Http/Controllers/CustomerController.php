@@ -39,7 +39,7 @@ class CustomerController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
+        return redirect()->route('customers.index')->with('success', '!Vendedor creado exitosamente!');
     }
 
     /**
@@ -74,7 +74,7 @@ class CustomerController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
+        return redirect()->route('customers.index')->with('success', '!Vendedor actualizado exitosamente!');
     }
 
     /**
@@ -86,12 +86,12 @@ class CustomerController extends Controller
 
         if($customer->sales()->exists()) {
             return redirect()->route('customers.index')
-            ->with('error', 'No se puede eliminar el cliente porque tiene ventas asociadas.');
+            ->with('error', 'Ventas asociadas a este vendedor, no se puede eliminar');
         }
 
         $customer->delete();
 
         return redirect()->route('customers.index')
-        ->with('success', 'Customer deleted successfully.');
+        ->with('success', '!Vendedor eliminado exitosamente!');
     }
 }

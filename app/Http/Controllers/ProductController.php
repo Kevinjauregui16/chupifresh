@@ -35,6 +35,12 @@ class ProductController extends Controller
             'cost' => 'required|numeric|min:0|max:999999.99',
             'price' => 'required|numeric|min:0|max:999999.99',
             'quantity' => 'required|integer|min:1|max:10000',
+        ]
+        , [
+            'name.required' => 'El nombre del producto es obligatorio.',
+            'cost.required' => 'El costo del producto es obligatorio.',
+            'price.required' => 'El precio del producto es obligatorio.',
+            'quantity.required' => 'El stock del producto es obligatoria.',
         ]);
 
         Product::create([
@@ -75,6 +81,12 @@ class ProductController extends Controller
             'cost' => 'required|numeric|min:0|max:999999.99',
             'price' => 'required|numeric|min:0|max:999999.99',
             'quantity' => 'required|integer|min:1|max:10000',
+        ],
+        [
+            'name.required' => 'El nombre del producto es obligatorio.',
+            'cost.required' => 'El costo del producto es obligatorio.',
+            'price.required' => 'El precio del producto es obligatorio.',
+            'quantity.required' => 'El stock del producto es obligatoria.',
         ]);
 
         $product = Product::findOrFail($id);

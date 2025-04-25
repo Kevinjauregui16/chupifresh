@@ -5,7 +5,6 @@
     <div class="flex justify-center items-center h-screen">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
             <h2 class="text-xl font-bold mb-4">Crear venta</h2>
-
             @if (session('success'))
                 <p class="text-green-600 mb-4">{{ session('success') }}</p>
             @endif
@@ -72,6 +71,9 @@
                         </div>
                     @endforeach
                 </div>
+                @error('products')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
 
                 <div class="flex items-center mt-4 gap-3">
 
@@ -143,10 +145,10 @@
 
         function validateForm() {
             const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-            if (checkboxes.length === 0) {
-                alert('Please select at least one product.');
-                return false;
-            }
+            // if (checkboxes.length === 0) {
+            //     alert('Please select at least one product.');
+            //     return false;
+            // }
 
             // Verificar si hay cantidades seleccionadas mayores a 0 para los productos seleccionados
             const invalidQuantity = [...checkboxes].some((checkbox) => {

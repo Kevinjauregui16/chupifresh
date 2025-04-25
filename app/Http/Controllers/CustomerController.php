@@ -33,6 +33,9 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+        ],
+        [
+            'name.required' => 'El nombre del vendedor es obligatorio.',
         ]);
 
         Customer::create([
@@ -67,7 +70,10 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-        ]);
+        ],
+    [
+        'name.required' => 'El nombre del vendedor es obligatorio.'
+    ]);
 
         $customer = Customer::findOrFail($id);
         $customer->update([

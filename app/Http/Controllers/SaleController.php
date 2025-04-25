@@ -47,7 +47,8 @@ class SaleController extends Controller
             'products.*.quantity' => 'required|integer|min:1',
             'is_closed' => 'boolean'
         ],[
-            'customer_id.required' => 'Debes seleccionar un vendedor para la venta.',
+            'customer_id.required' => 'Debes seleccionar un vendedor.',
+            'products.required' => 'Debes agregar al menos un producto.',
         ]);
 
         $isClosed = $request->has('is_closed') ? true : false;

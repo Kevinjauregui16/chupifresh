@@ -24,7 +24,7 @@
 
                 <div class="mb-4">
                     <label for="cost" class="block text-gray-700 font-medium">Costo:</label>
-                    <input type="number" id="cost" name="cost" value="{{ old('cost') }}"
+                    <input type="number" id="cost" name="cost" step="0.01" value="{{ old('cost') }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('cost')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -33,7 +33,7 @@
 
                 <div class="mb-4">
                     <label for="price" class="block text-gray-700 font-medium">Precio:</label>
-                    <input type="number" id="price" name="price" value="{{ old('price') }}"
+                    <input type="number" id="price" name="price" step="0.01" value="{{ old('price') }}"
                         class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300">
                     @error('price')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -51,9 +51,9 @@
 
                 <div class="flex gap-4">
                     <a href="{{ route('products.index') }}"
-                        class="w-full bg-amber-500 text-white px-4 py-2
+                        class="w-full bg-secondary text-white px-4 py-2
                     rounded-lg text-center">Cancelar</a>
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">
+                    <button type="submit" class="w-full bg-primary text-white px-4 py-2 rounded-lg">
                         Guardar
                     </button>
                 </div>

@@ -21,9 +21,13 @@ class HomeController extends Controller
         $highStockProducts = Product::where('quantity', '>=', 30)->get();
         $highStockLabels = $highStockProducts->pluck('name');
         $highStockQuantities = $highStockProducts->pluck('quantity');
-        $sales = Sale::sum('total');
+        $sales = number_format(Sale::sum('total'), 2, '.', '');
         $closedSalesCount = Sale::where('is_closed', true)->count();
         $openSalesCount = Sale::where('is_closed', false)->count();
+        $totalCost = Sale::with('products')->get()->sum(function ($sale){
+            return $sale->products->sum('pivot.cost');
+        });
+        $earnings = number_format($sales - $totalCost, 2, '.', '');
 
         return view('home.index', compact(
             'customers',
@@ -37,7 +41,9 @@ class HomeController extends Controller
             'highStockQuantities',
             'sales',
             'closedSalesCount',
-            'openSalesCount'
+            'openSalesCount',
+            'totalCost',
+            'earnings'
         ));
     }
 }

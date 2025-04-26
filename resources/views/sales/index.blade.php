@@ -4,13 +4,13 @@
 @section('content')
     <div class="flex flex-col justify-start w-full h-screen pt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
-            <p class="text-3xl font-bold">Ventas</p>
-            <a href="{{ route('sales.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">Nueva +</a>
+            <p class="text-3xl font-bold text-gray-500">Ventas</p>
+            <a href="{{ route('sales.create') }}" class="bg-utils text-white font-bold text-sm px-4 py-1 rounded-lg">Nueva +</a>
         </div>
         <div class="bg-white shadow-xl rounded-xl p-4 w-[90%] mx-auto">
             <table class="table-auto w-full">
                 <thead>
-                    <tr class="bg-gray-100">
+                    <tr class="bg-gray-100 text-gray-500">
                         <th class="px-4 py-2">Id</th>
                         <th class="px-4 py-2">Vendedor</th>
                         <th class="px-4 py-2">Productos</th>
@@ -43,26 +43,26 @@
                                     @endforeach
                                 </div>
                                 <button id="toggle-btn-{{ $sale->id }}" onclick="toggleProducts({{ $sale->id }})"
-                                    class="text-blue-500">Ver
+                                    class="text-primary">Ver
                                     Productos</button>
                             </td>
                             <td class="px-4 py-2">{{ $sale->units }}</td>
                             <td class="px-4 py-2">${{ $sale->total }}</td>
                             <td class="px-4 py-2 flex items-center justify-center gap-2">
                                 <span
-                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-yellow-300' : 'bg-green-500' }}"></span>
+                                    class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-secondary' : 'bg-primary' }}"></span>
                                 {{ $sale->is_closed === 0 ? 'Pendiente' : 'Pagada' }}
                             </td>
                             <td class="px-4 py-2">{{ $sale->created_at }}</td>
                             <td class="px-4 py-2">{{ $sale->updated_at }}</td>
                             <td class="px-4 py-2 gap-2 flex justify-center">
                                 <a href="{{ route('sales.edit', $sale->id) }}"
-                                    class="text-blue-500 hover:text-blue-300 transition-colors p-1"><i
+                                    class="text-primary hover:text-blue-400 transition-colors p-1"><i
                                         class="fa-solid fa-pencil"></i></a>
                                 <form action="{{ route('sales.destroy', $sale) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-300 transition-colors p-1"><i
+                                    <button type="submit" class="text-secondary hover:text-red-400 transition-colors p-1"><i
                                             class="fa-solid fa-trash-can"></i></button>
                                 </form>
                             </td>

@@ -4,13 +4,13 @@
 @section('content')
     <div class="flex flex-col justify-start w-full h-screen pt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
-            <p class="text-3xl font-bold">Vendedores</p>
-            <a href="{{ route('customers.create') }}" class="bg-green-500 text-white text-sm px-4 py-1 rounded-lg">Nuevo +</a>
+            <p class="text-3xl font-bold text-gray-500">Vendedores</p>
+            <a href="{{ route('customers.create') }}" class="bg-utils text-white font-bold text-sm px-4 py-1 rounded-lg">Nuevo +</a>
         </div>
         <div class="bg-white shadow-xl rounded-xl p-4 w-[90%] mx-auto">
             <table class="table-auto w-full">
                 <thead>
-                    <tr class="bg-gray-100">
+                    <tr class="bg-gray-100 text-gray-500">
                         <th class="px-4 py-2">Id</th>
                         <th class="px-4 py-2">Nombre</th>
                         <th class="px-4 py-2">Acciones</th>
@@ -31,13 +31,13 @@
                             <td class="px-4 py-2">{{ $customer->name }}</td>
                             <td class="px-4 py-2">
                                 <a href="{{ route('customers.edit', $customer) }}"
-                                    class="text-blue-500 hover:text-blue-300 transition-colors p-1"><i
+                                    class="text-primary hover:text-blue-400 transition-colors p-1"><i
                                         class="fa-solid fa-pencil"></i></a>
                                 <form action="{{ route('customers.destroy', $customer) }}" method="POST"
                                     class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-300 transition-colors p-1"><i
+                                    <button type="submit" class="text-secondary hover:text-red-400 transition-colors p-1"><i
                                             class="fa-solid fa-trash-can"></i></button>
                                 </form>
                             </td>

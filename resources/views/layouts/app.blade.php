@@ -14,6 +14,8 @@
                 extend: {
                     colors: {
                         primary: '#3049D0',
+                        secondary: '#FF2D75',
+                        utils: '#22c55e'
                     },
                 },
             },
@@ -29,7 +31,8 @@
     <header class=" w-72 h-full flex flex-col items-center justify-center">
         <div class="h-1/5 flex items-center">
             <img src="{{ asset('llama.png') }}" alt="logo" class="w-16 h-16 bg-white rounded-full">
-            <h1 class="text-2xl text-primary text-center font-black">LlamBoard</h1>
+            <h1 class="text-2xl text-primary text-center font-black"><span class="text-secondary">Llam</span>Board<span
+                    class="text-secondary">.</span></h1>
         </div>
         <div class="h-4/5 w-full flex flex-col justify-start gap-1 bg-primary pt-10 rounded-tr-[110px]">
             <x-linkNavbar href="{{ route('home.index') }}" icon="{{ 'house' }}"> Inicio </x-linkNavbar>

@@ -24,9 +24,9 @@
 
                 <div class="flex gap-4">
                     <a href="{{ route('customers.index') }}"
-                        class="w-full bg-amber-500 text-white px-4 py-2
+                        class="w-full bg-secondary text-white px-4 py-2
                         rounded-lg text-center"">Cancelar</a>
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">
+                    <button type="submit" class="w-full bg-primary text-white px-4 py-2 rounded-lg">
                         Guardar
                     </button>
                 </div>

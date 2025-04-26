@@ -83,7 +83,7 @@
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="is_closed" name="is_closed" value="1" class="sr-only peer"
                             onchange="toggleLabelText()" {{ $sale->is_closed ? 'checked' : '' }}>
-                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 transition-colors">
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-primary transition-colors">
                         </div>
                         <div
                             class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform peer-checked:translate-x-full transition-transform">
@@ -95,8 +95,8 @@
                 <!-- Botones -->
                 <div class="flex gap-4 mt-4">
                     <a href="{{ route('sales.index') }}"
-                        class="w-full bg-amber-500 text-white px-4 py-2 rounded-lg text-center">Cancelar</a>
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
+                        class="w-full bg-secondary text-white px-4 py-2 rounded-lg text-center">Cancelar</a>
+                    <button type="submit" class="w-full bg-primary text-white px-4 py-2 rounded-lg">Guardar</button>
                 </div>
             </form>
         </div>

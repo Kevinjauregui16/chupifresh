@@ -2,8 +2,8 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="m-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 2xl:gap-4 px-8 mt-1">
 
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center">
                 <div class="w-1/2">
@@ -38,24 +38,17 @@
             <div class="bg-white shadow-xl rounded-lg p-4 flex items-center gap-1 2xl:gap-4">
                 <div class="w-1/3">
                     <h2 class="text-md 2xl:text-lg text-gray-600 font-bold mb-2">Ventas</h2>
-                    <p class="text-lg 2xl:text-3xl font-semibold text-secondary">$<span
-                            class="text-secondary">{{ $sales }}</span>
+                    <p class="text-lg font-semibold text-secondary">$<span class="text-secondary">{{ $sales }}</span>
                     </p>
                 </div>
                 <div class="w-1/3">
                     <h2 class="text-md 2xl:text-lg text-gray-600 font-bold mb-2">Ganancias</h2>
-                    <p class="text-lg 2xl:text-3xl font-semibold text-primary">$<span
-                            class="text-primary">{{ $earnings }}</span>
+                    <p class="text-lg font-semibold text-primary">$<span class="text-primary">{{ $earnings }}</span>
                     </p>
                 </div>
                 <div class="w-1/3 flex justify-center items-center border-r-4 border-primary">
                     <i class="fa-solid fa-wallet fa-3x text-gray-400"></i>
                 </div>
-            </div>
-
-            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center justify-center">
-                <h2 class="text-lg text-gray-600 font-bold mb-4">Estados de ventas</h2>
-                <canvas id="salesPieChart"></canvas>
             </div>
 
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
@@ -68,6 +61,48 @@
                 <canvas id="highStockChart" height="350" class="m-auto"></canvas>
             </div>
 
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center col-span-1 md:col-span-2">
+                <h2 class="text-lg text-gray-600 font-bold">Top 3 más vendidos</h2>
+                <canvas id="bestSellingChart" height="125" class="my-auto"></canvas>
+            </div>
+
+            <div class=" rounded-lg p-2 flex flex-col items-center col-span-1 md:col-span-2">
+                <h2 class="text-lg text-gray-600 font-bold">Acciones rapidas</h2>
+                <div class="flex flex-col justify-center items-center gap-4 m-auto w-full text-white">
+                    <a href="{{ route('customers.create') }}"
+                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-xl flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        <p class="m-auto text-xl">Registrar vendedor +</p>
+                    </a>
+                    <a href="{{ route('products.create') }}"
+                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        <p class="m-auto text-xl">Registrar producto +</p>
+                    </a>
+                    <a href="{{ route('sales.create') }}"
+                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        <p class="m-auto text-xl">Registrar venta +</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center justify-center">
+                <h2 class="text-lg text-gray-600 font-bold mb-4">Estados de ventas</h2>
+                <canvas id="salesPieChart"></canvas>
+            </div>
+
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
+                <h2 class="text-lg font-bold text-gray-600 mb-4">Top 3 menos vendidos</h2>
+                <div class="m-auto">
+                    @foreach ($lowestSelling as $product)
+                        <div class="flex justify-between items-center border-b p-4 gap-2">
+                            <span class="font-medium">{{ $product->name }}</span>
+                            <span class="bg-red-50 text-secondary px-2 py-1 rounded-full text-sm">
+                                {{ $product->total_sold }} unidades
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -75,15 +110,15 @@
     <script>
         var ctx = document.getElementById('salesPieChart').getContext('2d');
         var salesPieChart = new Chart(ctx, {
-            type: 'doughnut', // Tipo de gráfico
+            type: 'doughnut',
             data: {
                 labels: ['Pagadas', 'Pendientes'],
                 datasets: [{
                     label: 'Sales Status',
                     data: [{{ $closedSalesCount }},
                         {{ $openSalesCount }}
-                    ], // Valores de ventas cerradas y abiertas
-                    backgroundColor: ['#3049D0', '#FF2D75'], // Colores para los segmentos
+                    ],
+                    backgroundColor: ['#3049D0', '#FF2D75'],
                 }]
             },
             options: {
@@ -160,5 +195,44 @@
                 }
             }
         })
+
+        const bestSellingCtx = document.getElementById('bestSellingChart').getContext('2d');
+        const bestSellingChart = new Chart(bestSellingCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($bestSelling->pluck('name')) !!},
+                datasets: [{
+                    label: 'Unidades vendidas',
+                    data: {!! json_encode($bestSelling->pluck('total_sold')) !!},
+                    backgroundColor: [
+                        '#3049D0'
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.parsed.x} unidades`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
     </script>
 @endsection

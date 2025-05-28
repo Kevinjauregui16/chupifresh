@@ -23,22 +23,24 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <title>@yield('title', 'Dashboard')</title>
+    <title>@yield('title', '')</title>
 </head>
 
 <body class="flex h-screen">
     <!-- Header en la parte izquierda -->
-    <header class=" w-72 h-full flex flex-col items-center justify-center">
+    <header class="fixed left-0 top-0 w-64 h-screen flex flex-col items-center justify-center z-20">
         <div class="h-1/5 flex items-center">
-            <img src="{{ asset('llama.png') }}" alt="logo" class="w-16 h-16 bg-white rounded-full">
-            <h1 class="text-2xl text-primary text-center font-black"><span class="text-secondary">Llam</span>Board<span
-                    class="text-secondary">.</span></h1>
+            <h1
+                class="text-3xl font-black text-center bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+                PanelFresh
+            </h1>
         </div>
         <div class="h-4/5 w-full flex flex-col justify-start gap-1 bg-primary pt-10 rounded-tr-[110px]">
             <x-linkNavbar href="{{ route('home.index') }}" icon="{{ 'house' }}"> Inicio </x-linkNavbar>
             <x-linkNavbar href="{{ route('customers.index') }}" icon="{{ 'users' }}"> Vendedores </x-linkNavbar>
             <x-linkNavbar href="{{ route('products.index') }}" icon="{{ 'tag' }}"> Productos </x-linkNavbar>
             <x-linkNavbar href="{{ route('sales.index') }}" icon="{{ 'cart-shopping' }}"> Ventas </x-linkNavbar>
+            <x-linkNavbar href="{{ route('accounts.index') }}" icon="{{ 'calculator' }}"> Cuentas </x-linkNavbar>
         </div>
         {{-- <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -51,7 +53,7 @@
     </header>
 
     <!-- Contenido principal -->
-    <div class="flex flex-col w-full">
+    <div class="flex flex-col w-full ml-64">
         <main class="flex-grow">
             @yield('content')
         </main>

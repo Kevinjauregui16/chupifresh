@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard')
+@section('title', 'PanelFresh - Inicio')
 
 @section('content')
     <div class="m-auto">
@@ -54,6 +54,16 @@
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
                 <h2 class="text-lg text-gray-600 font-bold mb-4">Existencias bajas</h2>
                 <canvas id="lowStockChart" height="350" class="m-auto"></canvas>
+                @if ($lowStockProducts->where('quantity', 0)->count())
+                    <div class="mt-4 text-center">
+                        <h3 class="text-red-500 font-bold">¡Productos sin stock!</h3>
+                        <ul>
+                            @foreach ($lowStockProducts->where('quantity', 0) as $product)
+                                <li class="text-gray-700">{{ $product->name }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
 
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center">
@@ -66,20 +76,24 @@
                 <canvas id="bestSellingChart" height="125" class="my-auto"></canvas>
             </div>
 
-            <div class=" rounded-lg p-2 flex flex-col items-center col-span-1 md:col-span-2">
+            <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center col-span-1 md:col-span-2">
                 <h2 class="text-lg text-gray-600 font-bold">Acciones rapidas</h2>
-                <div class="flex flex-col justify-center items-center gap-4 m-auto w-full text-white">
+                <div class="flex flex-col justify-center items-center gap-4 p-4 m-auto w-full h-full text-white">
                     <a href="{{ route('customers.create') }}"
-                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-xl flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        class="text-utils cursor-pointer w-full h-1/4 rounded-xl flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
                         <p class="m-auto text-xl">Registrar vendedor +</p>
                     </a>
                     <a href="{{ route('products.create') }}"
-                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
                         <p class="m-auto text-xl">Registrar producto +</p>
                     </a>
                     <a href="{{ route('sales.create') }}"
-                        class="text-utils cursor-pointer w-full h-16 2xl:h-24 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
                         <p class="m-auto text-xl">Registrar venta +</p>
+                    </a>
+                    <a href="{{ route('sales.index') }}"
+                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
+                        <p class="m-auto text-xl">Crear cuenta +</p>
                     </a>
                 </div>
             </div>

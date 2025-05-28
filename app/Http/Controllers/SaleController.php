@@ -235,4 +235,22 @@ class SaleController extends Controller
 
         return redirect()->route('sales.index')->with('success', '!Venta eliminada exitosamente!');
     }
+
+    public function getTotalBySales(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:sales,id'
+        ]);
+
+        $ventas = Sale::whereIn('id', $request->ids)->get();
+
+        $totalUnidades = $ventas->sum('units');
+        $totalVenta = $ventas->sum('total');
+
+        return response()->json([
+            'total_unidades' => $totalUnidades,
+            'total_venta' => $totalVenta
+        ]);
+    }
 }

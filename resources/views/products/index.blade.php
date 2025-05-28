@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Products')
+@section('title', 'PanelFresh - Productos')
 
 @section('content')
     <div class="flex flex-col justify-start w-full h-screen pt-6">
         <div class="flex justify-between items-center mb-2 py-4 w-[90%] mx-auto">
-            <p class="text-3xl font-bold text-gray-500">Productos</p>
+            <p class="text-3xl font-bold text-gray-500">Listado de Productos</p>
             <a href="{{ route('products.create') }}" class="bg-utils text-white font-bold text-sm px-4 py-1 rounded-lg">Nuevo +</a>
         </div>
         <div class="bg-white shadow-xl rounded-xl p-4 w-[90%] mx-auto">

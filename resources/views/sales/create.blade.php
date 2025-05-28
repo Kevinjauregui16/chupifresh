@@ -4,7 +4,7 @@
 @section('content')
     <div class="flex justify-center items-center h-screen">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
-            <h2 class="text-xl font-bold mb-4">Crear venta</h2>
+            <h2 class="text-xl text-gray-600 font-bold mb-4">Crear venta</h2>
             @if (session('success'))
                 <p class="text-green-600 mb-4">{{ session('success') }}</p>
             @endif
@@ -46,13 +46,13 @@
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($products as $product)
                         <div class="border p-4 rounded-lg shadow-md">
-                            <h4 class="font-bold">{{ $product->name }}</h4>
+                            <h4 class="font-bold text-gray-600">{{ $product->name }}</h4>
                             <p class="text-gray-700">Precio: ${{ $product->price }}</p>
                             <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
 
                             <!-- Mostrar un mensaje si no hay suficiente stock -->
                             @if ($product->quantity <= 0)
-                                <p class="text-red-500 mt-1">Out of stock</p>
+                                <p class="text-red-500 mt-1">Sin stock</p>
                             @endif
 
                             <div class="flex items-center mt-2 gap-2">

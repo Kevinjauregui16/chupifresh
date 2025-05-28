@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\AccountController;
 
 // Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 // Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -35,3 +36,7 @@ Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 Route::get('/sales/{id}/edit', [SaleController::class, 'edit'])->name('sales.edit');
 Route::put('/sales/{id}', [SaleController::class, 'update'])->name('sales.update');
 Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+
+Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
+Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('accounts.destroy');

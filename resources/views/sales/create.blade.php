@@ -2,7 +2,7 @@
 @section('title', 'Create Sale')
 
 @section('content')
-    <div class="flex justify-center items-center h-screen">
+    <div class="flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
             <h2 class="text-xl text-gray-600 font-bold mb-4">Crear venta</h2>
             @if (session('success'))
@@ -13,7 +13,7 @@
                 @csrf
 
                 <!-- Select para el cliente -->
-                <div class="mb-4 flex justify-between">
+                <div class="mb-4 flex justify-between gap-2">
                     <div>
                         <label for="customer" class="block text-gray-700 font-medium">Vendedor:</label>
                         <select id="customer" name="customer_id"

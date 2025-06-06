@@ -43,6 +43,8 @@
             <x-linkNavbar href="{{ route('products.index') }}" icon="{{ 'tag' }}"> Productos </x-linkNavbar>
             <x-linkNavbar href="{{ route('sales.index') }}" icon="{{ 'cart-shopping' }}"> Ventas </x-linkNavbar>
             <x-linkNavbar href="{{ route('accounts.index') }}" icon="{{ 'calculator' }}"> Cuentas </x-linkNavbar>
+            <x-linkNavbar href="{{ route('movements.index') }}" icon="{{ 'wallet' }}"> Cartera
+            </x-linkNavbar>
         </div>
         {{-- <form action="{{ route('logout') }}" method="POST">
             @csrf

@@ -2,10 +2,9 @@
 @section('title', 'Edit Sale')
 
 @section('content')
-    <div class="flex justify-center items-center h-screen">
+    <div class="flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-xl w-1/2">
-            <h2 class="text-xl font-bold mb-4">Editar venta</h2>
-
+            <h2 class="text-xl text-gray-600 font-bold mb-4">Editar venta</h2>
             @if (session('success'))
                 <p class="text-green-600 mb-4">{{ session('success') }}</p>
             @endif
@@ -15,7 +14,7 @@
                 @method('PUT')
 
                 <!-- Select para clientes -->
-                <div class="mb-4 flex justify-between">
+                <div class="mb-4 flex justify-between gap-2">
                     <div>
                         <label for="customer" class="block text-gray-700 font-medium">Vendedor:</label>
                         <select id="customer" name="customer_id"
@@ -36,6 +35,8 @@
                         <label for="total" class="block text-gray-700 font-medium">Unidades:</label>
                         <input type="text" id="units" class="w-full px-4 py-2 border rounded-lg bg-green-200"
                             value="{{ $sale->units }}" readonly disabled>
+                    </div>
+                    <div>
                         <label for="total" class="block text-gray-700 font-medium">Total:</label>
                         <input type="text" id="total" class="w-full px-4 py-2 border rounded-lg bg-green-200"
                             value="${{ $sale->total }}" readonly disabled>
@@ -59,7 +60,7 @@
                         @endphp
 
                         <div class="border p-4 rounded-lg shadow-md">
-                            <h4 class="font-bold">{{ $product->name }}</h4>
+                            <h4 class="font-bold text-gray-600">{{ $product->name }}</h4>
                             <p class="text-gray-700">Precio: ${{ $product->price }}</p>
                             <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
 

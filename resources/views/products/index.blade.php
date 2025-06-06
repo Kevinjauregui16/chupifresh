@@ -11,7 +11,6 @@
             <table class="table-auto w-full">
                 <thead>
                     <tr class="bg-gray-100 text-gray-500">
-                        <th class="px-4 py-2">Id</th>
                         <th class="px-4 py-2">Nombre</th>
                         <th class="px-4 py-2">Costo</th>
                         <th class="px-4 py-2">Precio</th>
@@ -30,8 +29,7 @@
                 <tbody>
                     @foreach ($products as $product)
                         <tr
-                            class="text-center border-b border-gray-200  ">
-                            <td class="px-4 py-2">{{ $product->id }}</td>
+                            class="text-center border-b border-gray-200">
                             <td class="px-4 py-2">{{ $product->name }}</td>
                             <td class="px-4 py-2">${{ $product->cost }}</td>
                             <td class="px-4 py-2">${{ $product->price }}</td>

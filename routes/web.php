@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\MovementsController;
 
 // Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 // Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -40,3 +41,10 @@ Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.de
 Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
 Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
 Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+
+Route::get('/movements', [MovementsController::class, 'index'])->name('movements.index');
+Route::get('/movements/create', [MovementsController::class, 'create'])->name('movements.create');
+Route::post('/movements', [MovementsController::class, 'store'])->name('movements.store');
+Route::get('/movements/{id}/edit', [MovementsController::class, 'edit'])->name('movements.edit');
+Route::put('/movements/{id}', [MovementsController::class, 'update'])->name('movements.update');
+Route::delete('/movements/{id}', [MovementsController::class, 'destroy'])->name('movements.destroy');

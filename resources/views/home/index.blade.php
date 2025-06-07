@@ -35,18 +35,18 @@
                 </div>
             </div>
 
-            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center gap-1 2xl:gap-4">
-                <div class="w-1/3">
-                    <h2 class="text-md 2xl:text-lg text-gray-600 font-bold mb-2">Ventas</h2>
-                    <p class="text-lg font-semibold text-secondary">$<span class="text-secondary">{{ $sales }}</span>
+            <div class="bg-white shadow-xl rounded-lg p-4 flex items-center justify-between">
+                <div class="w-1/2">
+                    <h2 class="text-md 2xl:text-lg text-gray-600 font-bold">Ventas</h2>
+                    <p class="text-xl font-semibold text-secondary">$
+                        <span class="text-secondary">{{ number_format($sales, 2, '.', ',') }}</span>
                     </p>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-trend-up text-green-500"></i>
+                        <span class="text-xs font-bold text-green-600">${{ $earnings }}</span>
+                    </div>
                 </div>
-                <div class="w-1/3">
-                    <h2 class="text-md 2xl:text-lg text-gray-600 font-bold mb-2">Ganancias</h2>
-                    <p class="text-lg font-semibold text-primary">$<span class="text-primary">{{ $earnings }}</span>
-                    </p>
-                </div>
-                <div class="w-1/3 flex justify-center items-center border-r-4 border-primary">
+                <div class="w-1/2 flex justify-center items-center border-r-4 border-secondary pr-4">
                     <i class="fa-solid fa-wallet fa-3x text-gray-400"></i>
                 </div>
             </div>
@@ -78,22 +78,26 @@
 
             <div class="bg-white shadow-xl rounded-lg p-2 flex flex-col items-center col-span-1 md:col-span-2">
                 <h2 class="text-lg text-gray-600 font-bold">Acciones rapidas</h2>
-                <div class="flex flex-col justify-center items-center gap-4 p-4 m-auto w-full h-full text-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full p-4 m-auto">
                     <a href="{{ route('customers.create') }}"
-                        class="text-utils cursor-pointer w-full h-1/4 rounded-xl flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
-                        <p class="m-auto text-xl">Registrar vendedor +</p>
+                        class="block w-full text-center py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-secondary to-primary text-white shadow-md transition-all transform hover:scale-105">
+                        Registrar vendedor +
                     </a>
                     <a href="{{ route('products.create') }}"
-                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
-                        <p class="m-auto text-xl">Registrar producto +</p>
+                        class="block w-full text-center py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-secondary to-primary text-white shadow-md transition-all transform hover:scale-105">
+                        Registrar producto +
                     </a>
                     <a href="{{ route('sales.create') }}"
-                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
-                        <p class="m-auto text-xl">Registrar venta +</p>
+                        class="block w-full text-center py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-secondary to-primary text-white shadow-md transition-all transform hover:scale-105">
+                        Crear venta +
                     </a>
                     <a href="{{ route('sales.index') }}"
-                        class="text-utils cursor-pointer w-full h-1/4 rounded-lg flex justify-center bg-gray-100 hover:bg-gray-50 transition-colors">
-                        <p class="m-auto text-xl">Crear cuenta +</p>
+                        class="block w-full text-center py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-secondary to-primary text-white shadow-md transition-all transform hover:scale-105">
+                        Crear cuenta +
+                    </a>
+                    <a href="{{ route('movements.create') }}"
+                        class="block w-full text-center py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-secondary to-primary text-white shadow-md transition-all transform hover:scale-105 col-span-1 md:col-span-2">
+                        Registrar movimiento +
                     </a>
                 </div>
             </div>

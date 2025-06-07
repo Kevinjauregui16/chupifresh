@@ -23,45 +23,48 @@
                             <th class="px-4 py-2">Descripción</th>
                             <th class="px-4 py-2">Saldo anterior</th>
                             <th class="px-4 py-2">Monto</th>
-                            <th class="px-4 py-2">Fecha</th>
+                            <th class="px-4 py-2">Creación</th>
                             <th class="px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
+                    @if ($movements->isEmpty())
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="text-center text-amber-500 text-lg py-4">Sin movimientos aún.</td>
+                            </tr>
+                        </tbody>
+                    @else
+                    @endif
                     <tbody>
-                        <tr class="text-center border-b border-gray-200">
-                            <td class="px-4 py-2">Movimiento de ejemplo</td>
-                            <td class="px-4 py-2 text-gray-500">$1,000.00</td>
-                            <td class="px-4 py-2 text-green-500 font-bold">+$100.00</td>
-                            <td class="px-4 py-2 text-xs text-gray-400">04/06/2025</td>
-                            <td class="px-4 py-2">
-                                <a href="#" class="text-primary hover:text-blue-400 transition-colors p-1"><i
-                                        class="fa-solid fa-pencil"></i></a>
-                                <form action="#" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-secondary hover:text-red-400 transition-colors p-1"><i
-                                            class="fa-solid fa-trash-can"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr class="text-center border-b border-gray-200">
-                            <td class="px-4 py-2">Otro movimiento</td>
-                            <td class="px-4 py-2 text-gray-500">$900.00</td>
-                            <td class="px-4 py-2 text-red-500 font-bold">-$50.00</td>
-                            <td class="px-4 py-2 text-xs text-gray-400">03/06/2025</td>
-                            <td class="px-4 py-2">
-                                <a href="#" class="text-primary hover:text-blue-400 transition-colors p-1"><i
-                                        class="fa-solid fa-pencil"></i></a>
-                                <form action="#" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-secondary hover:text-red-400 transition-colors p-1"><i
-                                            class="fa-solid fa-trash-can"></i></button>
-                                </form>
-                            </td>
-                        </tr>
+                        @foreach ($movements as $movement)
+                            <tr class="text-center border-b border-gray-200">
+                                <td class="px-4 py-2">{{ $movement->description }}</td>
+                                <td class="px-4 py-2 text-gray-500">${{ $movement->amount_before }}</td>
+                                <td class="px-4 py-2 text-center">
+                                    @if ($movement->type === 'salida')
+                                        <span class="text-red-500 font-bold">+
+                                            ${{ number_format($movement->amount, 2, '.', ',') }}</span>
+                                    @else
+                                        <span class="text-green-500 font-bold">+
+                                            ${{ number_format($movement->amount, 2, '.', ',') }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2 text-gray-400 text-xs">{{ $movement->created_at }}</td>
+                                <td class="px-4 py-2">
+                                    <a href="{{ route('movements.edit', $movement) }}"
+                                        class="text-primary hover:text-blue-400 transition-colors p-1"><i
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <form action="{{ route('movements.destroy', $movement) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-secondary hover:text-red-400 transition-colors p-1"><i
+                                                class="fa-solid fa-trash-can"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -35,7 +35,7 @@
                     <div>
                         <label for="total" class="block text-gray-700 font-medium">Total:</label>
                         <input type="text" id="total" class="w-full px-4 py-2 border rounded-lg bg-green-200"
-                            value="$0.00" readonly disabled>
+                            value="$ 0.00" readonly disabled>
 
                         <!-- Este input oculto es el que se enviará al backend -->
                         <input type="hidden" id="total_hidden" name="total" value="0">
@@ -45,10 +45,12 @@
                 <!-- Mostrar productos en tarjetas -->
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($products as $product)
-                        <div class="border p-4 rounded-lg shadow-md">
-                            <h4 class="font-bold text-gray-600">{{ $product->name }}</h4>
-                            <p class="text-gray-700">Precio: ${{ $product->price }}</p>
-                            <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
+                        <div class="border p-4 rounded-lg shadow-md cursor-pointer group relative hover:bg-gray-100 transition-colors flex flex-col justify-center items-center"
+                            style="user-select: none;"
+                            onclick="incrementQuantity({{ $product->id }}, {{ $product->quantity }})">
+                            <h4 class="font-bold text-gray-600 text-center">{{ $product->name }}</h4>
+                            <p class="text-gray-700 text-center">Precio: ${{ $product->price }}</p>
+                            <p class="text-gray-700">Stock: <span class="font-bold">{{ $product->quantity }}</span></p>
 
                             <!-- Mostrar un mensaje si no hay suficiente stock -->
                             @if ($product->quantity <= 0)
@@ -56,17 +58,12 @@
                             @endif
 
                             <div class="flex items-center mt-2 gap-2">
-                                <!-- Checkbox para seleccionar el producto -->
-                                <input type="checkbox" name="products[{{ $product->id }}][id]" value="{{ $product->id }}"
-                                    id="product_{{ $product->id }}" class="product-checkbox"
-                                    data-price="{{ $product->price }}" data-stock="{{ $product->quantity }}"
-                                    onchange="toggleQuantity({{ $product->id }}); updateTotal();">
-
-
-                                <!-- Input de cantidad (inicialmente deshabilitado) -->
-                                <input type="number" name="products[{{ $product->id }}][quantity]"
-                                    id="quantity_{{ $product->id }}" class="w-full px-2 border rounded-lg quantity-input"
-                                    placeholder="Quantity" min="1" value="0" disabled onchange="updateTotal();">
+                                <button type="button"
+                                    class="bg-secondary text-white rounded-xl w-9 h-7 flex items-center justify-center text-lg font-bold"
+                                    onclick="event.stopPropagation(); decrementQuantity({{ $product->id }});">-</button>
+                                <span id="quantity_display_{{ $product->id }}" class="text-xl font-semibold">0</span>
+                                <input type="hidden" name="products[{{ $product->id }}][quantity]"
+                                    id="quantity_{{ $product->id }}" value="0">
                             </div>
                         </div>
                     @endforeach
@@ -100,46 +97,41 @@
     </div>
 
     <script>
-        function toggleQuantity(productId) {
-            const checkbox = document.getElementById(`product_${productId}`);
+        function incrementQuantity(productId, maxStock) {
             const quantityInput = document.getElementById(`quantity_${productId}`);
-            const productStock = parseInt(checkbox.getAttribute('data-stock'));
-
-            if (checkbox.checked) {
-                quantityInput.disabled = false;
-                if (quantityInput.value == 0) quantityInput.value = 1; // Establecer valor por defecto
-                quantityInput.setAttribute('max', productStock);
-            } else {
-                quantityInput.disabled = true;
-                quantityInput.value = 0; // Reiniciar cantidad al desmarcar
+            let current = parseInt(quantityInput.value) || 0;
+            if (current < maxStock) {
+                quantityInput.value = current + 1;
+                document.getElementById(`quantity_display_${productId}`).textContent = quantityInput.value;
+                updateTotal();
             }
-
-            updateTotal();
         }
 
+        function decrementQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity_${productId}`);
+            let current = parseInt(quantityInput.value) || 0;
+            if (current > 0) {
+                quantityInput.value = current - 1;
+                document.getElementById(`quantity_display_${productId}`).textContent = quantityInput.value;
+                updateTotal();
+            }
+        }
+
+        // Modifica updateTotal para que solo sume cantidades > 0
         function updateTotal() {
             let total = 0;
             let units = 0;
-
-            const checkboxes = document.querySelectorAll('.product-checkbox');
-
-            checkboxes.forEach((checkbox) => {
-                const productId = checkbox.value;
-                const quantityInput = document.getElementById(`quantity_${productId}`);
-                const price = parseFloat(checkbox.dataset.price);
-
-                if (checkbox.checked && !isNaN(price)) {
-                    const quantity = parseInt(quantityInput.value) || 0;
-                    total += price * quantity;
-                    units += quantity;
+            @foreach ($products as $product)
+                const price{{ $product->id }} = {{ $product->price }};
+                const quantity{{ $product->id }} = parseInt(document.getElementById('quantity_{{ $product->id }}')
+                    .value) || 0;
+                if (quantity{{ $product->id }} > 0) {
+                    total += price{{ $product->id }} * quantity{{ $product->id }};
+                    units += quantity{{ $product->id }};
                 }
-            });
-
-            // Actualizar el input visible
+            @endforeach
             document.getElementById('total').value = `$ ${total.toFixed(2)}`;
-            // Actualizar el input oculto que se enviará
             document.getElementById('total_hidden').value = total.toFixed(2);
-            // Actualizar el total de unidades
             document.getElementById('units').value = units;
         }
 

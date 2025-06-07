@@ -28,8 +28,8 @@
                             <th class="px-4 py-2">Unidades</th>
                             <th class="px-4 py-2">Total</th>
                             <th class="px-4 py-2">Estado</th>
-                            <th class="px-4 py-2">Fecha creación</th>
-                            <th class="px-4 py-2">Ultima edición</th>
+                            <th class="px-4 py-2">Creación</th>
+                            <th class="px-4 py-2">Edición</th>
                             <th class="px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
@@ -58,18 +58,18 @@
                                         @endforeach
                                     </div>
                                     <button id="toggle-btn-{{ $sale->id }}" type="button"
-                                        onclick="toggleProducts({{ $sale->id }})" class="text-primary">Ver
+                                        onclick="toggleProducts({{ $sale->id }})" class="text-primary text-xs">Ver
                                         Productos</button>
                                 </td>
                                 <td class="px-4 py-2">{{ $sale->units }}</td>
-                                <td class="px-4 py-2">${{ $sale->total }}</td>
+                                <td class="px-4 py-2">${{ number_format($sale->total, 2, '.', ',') }}</td>
                                 <td class="px-4 py-2 flex items-center justify-center gap-2">
                                     <span
                                         class="w-2 h-2 rounded-full {{ $sale->is_closed === 0 ? 'bg-secondary' : 'bg-primary' }}"></span>
                                     {{ $sale->is_closed === 0 ? 'Pendiente' : 'Pagada' }}
                                 </td>
-                                <td class="px-4 py-2">{{ $sale->created_at }}</td>
-                                <td class="px-4 py-2">{{ $sale->updated_at }}</td>
+                                <td class="px-4 py-2 text-gray-400 text-xs">{{ $sale->created_at }}</td>
+                                <td class="px-4 py-2 text-gray-400 text-xs">{{ $sale->updated_at }}</td>
                                 <td class="px-4 py-2 gap-2 flex justify-center">
                                     <a href="{{ route('sales.edit', $sale->id) }}"
                                         class="text-primary hover:text-blue-400 transition-colors p-1"><i

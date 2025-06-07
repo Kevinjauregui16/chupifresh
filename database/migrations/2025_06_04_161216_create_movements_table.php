@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
             $table->string('description');
             $table->decimal('amount_before', 10, 2);
             $table->decimal('amount', 10, 2);

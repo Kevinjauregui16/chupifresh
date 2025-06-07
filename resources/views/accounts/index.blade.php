@@ -14,7 +14,7 @@
                         <th class="px-4 py-2">Descripción</th>
                         <th class="px-4 py-2">Unidades</th>
                         <th class="px-4 py-2">Total</th>
-                        <th class="px-4 py-2">Fecha creación</th>
+                        <th class="px-4 py-2">Creación</th>
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
@@ -31,8 +31,8 @@
                                 <td class="px-4 py-2">{{ $cuenta->id }}</td>
                                 <td class="px-4 py-2">{{ $cuenta->description }}</td>
                                 <td class="px-4 py-2">{{ $cuenta->units }}</td>
-                                <td class="px-4 py-2">${{ $cuenta->total }}</td>
-                                <td class="px-4 py-2">{{ $cuenta->created_at }}</td>
+                                <td class="px-4 py-2">${{ number_format($cuenta->total, 2, '.', ',') }}</td>
+                                <td class="px-4 py-2 text-gray-400 text-xs">{{ $cuenta->created_at }}</td>
                                 <td class="px-4 py-2 gap-2 flex justify-center">
 
                                     <form action="{{ route('accounts.destroy', $cuenta) }}" method="POST"

@@ -24,6 +24,9 @@ class ProductSeeder extends Seeder
             'Pay de limón',
             'Ferrero',
             'Fresas con crema',
+            'Flan',
+            'Tiramisú',
+            'Leche',
             'Mango',
             'Fresa',
             'Jamaica',
@@ -36,7 +39,7 @@ class ProductSeeder extends Seeder
             Product::create([
                 'name' => $name,
                 'cost' => 10,
-                'price' => 15,
+                'price' => 18,
                 'quantity' => 20,
             ]);
         }

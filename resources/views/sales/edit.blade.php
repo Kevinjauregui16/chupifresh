@@ -55,25 +55,29 @@
                     @foreach ($products as $product)
                         @php
                             $included = $sale->products->firstWhere('id', $product->id);
-                            $checked = $included ? 'checked' : '';
                             $quantity = $included ? $included->pivot->quantity : 0;
+                            $stockDisponible = $product->quantity + $quantity;
                         @endphp
 
-                        <div class="border p-4 rounded-lg shadow-md">
-                            <h4 class="font-bold text-gray-600">{{ $product->name }}</h4>
-                            <p class="text-gray-700">Precio: ${{ $product->price }}</p>
-                            <p class="text-gray-700">Stock: {{ $product->quantity }}</p>
+                        <div class="border p-4 rounded-lg shadow-md cursor-pointer group relative hover:bg-gray-100 transition-colors flex flex-col justify-center items-center"
+                            style="user-select: none;"
+                            onclick="incrementQuantity({{ $product->id }}, {{ $stockDisponible }})">
+                            <h4 class="font-bold text-gray-600 text-center">{{ $product->name }}</h4>
+                            <p class="text-gray-700 text-center">Precio: ${{ $product->price }}</p>
+                            <p class="text-gray-700">Stock: <span class="font-bold">{{ $stockDisponible }}</span></p>
 
-                            <div class="flex items-center gap-2 mt-2">
-                                <input type="checkbox" name="products[{{ $product->id }}][id]"
-                                    value="{{ $product->id }}" id="product_{{ $product->id }}" class="product-checkbox"
-                                    data-price="{{ $product->price }}"
-                                    onchange="toggleQuantity({{ $product->id }}); updateTotal();" {{ $checked }}>
+                            @if ($stockDisponible <= 0)
+                                <p class="text-red-500 mt-1">Sin stock</p>
+                            @endif
 
-                                <input type="number" name="products[{{ $product->id }}][quantity]"
-                                    id="quantity_{{ $product->id }}" class="w-full px-2 border rounded-lg quantity-input"
-                                    placeholder="Quantity" min="1" value="{{ $quantity }}"
-                                    {{ $checked ? '' : 'disabled' }} onchange="updateTotal();">
+                            <div class="flex items-center mt-2 gap-2">
+                                <button type="button"
+                                    class="bg-secondary text-white rounded-xl w-9 h-7 flex items-center justify-center text-lg font-bold"
+                                    onclick="event.stopPropagation(); decrementQuantity({{ $product->id }});">-</button>
+                                <span id="quantity_display_{{ $product->id }}"
+                                    class="text-xl font-semibold">{{ $quantity }}</span>
+                                <input type="hidden" name="products[{{ $product->id }}][quantity]"
+                                    id="quantity_{{ $product->id }}" value="{{ $quantity }}">
                             </div>
                         </div>
                     @endforeach
@@ -104,51 +108,52 @@
     </div>
 
     <script>
-        function toggleQuantity(productId) {
-            const checkbox = document.getElementById(`product_${productId}`);
+        function incrementQuantity(productId, maxStock) {
             const quantityInput = document.getElementById(`quantity_${productId}`);
-
-            if (checkbox.checked) {
-                quantityInput.disabled = false;
-                if (quantityInput.value == 0) quantityInput.value = 1;
-            } else {
-                quantityInput.disabled = true;
-                quantityInput.value = 0;
+            let current = parseInt(quantityInput.value) || 0;
+            if (current < maxStock) {
+                quantityInput.value = current + 1;
+                document.getElementById(`quantity_display_${productId}`).textContent = quantityInput.value;
+                updateTotal();
             }
+        }
 
-            updateTotal();
+        function decrementQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity_${productId}`);
+            let current = parseInt(quantityInput.value) || 0;
+            if (current > 0) {
+                quantityInput.value = current - 1;
+                document.getElementById(`quantity_display_${productId}`).textContent = quantityInput.value;
+                updateTotal();
+            }
         }
 
         function updateTotal() {
             let total = 0;
             let units = 0;
-
-            const checkboxes = document.querySelectorAll('.product-checkbox');
-
-            checkboxes.forEach((checkbox) => {
-                const productId = checkbox.value;
-                const quantityInput = document.getElementById(`quantity_${productId}`);
-                const price = parseFloat(checkbox.dataset.price);
-
-                if (checkbox.checked && !isNaN(price)) {
-                    const quantity = parseInt(quantityInput.value) || 0;
-                    total += price * quantity;
-                    units += quantity;
+            @foreach ($products as $product)
+                const price{{ $product->id }} = {{ $product->price }};
+                const quantity{{ $product->id }} = parseInt(document.getElementById('quantity_{{ $product->id }}')
+                    .value) || 0;
+                if (quantity{{ $product->id }} > 0) {
+                    total += price{{ $product->id }} * quantity{{ $product->id }};
+                    units += quantity{{ $product->id }};
                 }
-            });
-
-            // Actualizar el input visible
+            @endforeach
             document.getElementById('total').value = `$ ${total.toFixed(2)}`;
-            // Actualizar el input hidden que se envía
             document.getElementById('total_hidden').value = total.toFixed(2);
-            // Actualizar el input de unidades
             document.getElementById('units').value = units;
         }
 
         function validateForm() {
-            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-            if (checkboxes.length === 0) {
-                alert('Please select at least one product.');
+            let valid = false;
+            @foreach ($products as $product)
+                if (parseInt(document.getElementById('quantity_{{ $product->id }}').value) > 0) {
+                    valid = true;
+                }
+            @endforeach
+            if (!valid) {
+                alert('Debes seleccionar al menos un producto con cantidad mayor a 0.');
                 return false;
             }
             return true;
@@ -159,5 +164,9 @@
             const label = document.getElementById('toggleLabel');
             label.textContent = checkbox.checked ? 'Cuenta Pagada' : 'Cuenta Pendiente';
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleLabelText();
+        });
     </script>
 @endsection

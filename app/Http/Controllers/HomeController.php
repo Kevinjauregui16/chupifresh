@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Movement;
 
 class HomeController extends Controller
 {
@@ -23,12 +24,15 @@ class HomeController extends Controller
         $highStockLabels = $highStockProducts->pluck('name');
         $highStockQuantities = $highStockProducts->pluck('quantity');
 
-
-        $sales = number_format(Sale::sum('total'), 2, '.', '');
+        $sales = Sale::sum('total');
         $totalCost = Sale::with('products')->get()->sum(function ($sale) {
             return $sale->products->sum('pivot.cost');
         });
-        $earnings = number_format($sales - $totalCost, 2, '.', '');
+
+        $movementsIn = Movement::where('type', 'entrada')->sum('amount');
+        $movementsOut = Movement::where('type', 'salida')->sum('amount');
+
+        $earnings = number_format($sales - $totalCost + $movementsIn - $movementsOut, 2, '.', ',');
 
         $closedSalesCount = Sale::where('is_closed', true)->count();
         $openSalesCount = Sale::where('is_closed', false)->count();

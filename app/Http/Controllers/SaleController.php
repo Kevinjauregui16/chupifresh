@@ -43,16 +43,24 @@ class SaleController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'products' => 'required|array|min:1',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.quantity' => 'required|integer|min:0',
             'is_closed' => 'boolean'
-        ],[
+        ], [
             'customer_id.required' => 'Debes seleccionar un vendedor.',
             'products.required' => 'Debes agregar al menos un producto.',
         ]);
 
+        // Filtrar productos con cantidad > 0
+        $products = collect($request->products)
+            ->filter(fn($data) => intval($data['quantity']) > 0)
+            ->toArray();
+
+        if (empty($products)) {
+            return back()->withErrors(['products' => 'Debes agregar al menos un producto con cantidad mayor a 0.']);
+        }
+
+        $units = array_sum(array_column($products, 'quantity'));
         $isClosed = $request->has('is_closed') ? true : false;
-        $units = array_sum(array_column($request->products, 'quantity'));
 
         // Crear la venta con total = 0 (se actualizará luego)
         $sale = Sale::create([
@@ -64,10 +72,10 @@ class SaleController extends Controller
 
         $total = 0;
 
-        foreach ($request->products as $productData) {
-            $product = Product::find($productData['id']);
-            $quantity = $productData['quantity'];
-            $cost = $product->cost; // Costo unitario en el momento de la venta
+        foreach ($products as $productId => $data) {
+            $product = Product::find($productId);
+            $quantity = $data['quantity'];
+            $cost = $product->cost;
             $price = $product->price;
 
             if ($product->quantity < $quantity) {
@@ -76,17 +84,15 @@ class SaleController extends Controller
                 ]);
             }
 
-            // Calcular subtotal de este producto
             $subtotal = $price * $quantity;
             $total += $subtotal;
 
-            $product->quantity -= $quantity; // Reducir la cantidad en stock
-            $product->save(); // Guardar cambios en el producto
+            $product->quantity -= $quantity;
+            $product->save();
 
-            // Asociar producto a la venta
             $sale->products()->attach($product->id, [
                 'quantity' => $quantity,
-                'cost' => $product->cost, // Costo unitario en el momento de la venta
+                'cost' => $cost,
                 'price' => $price
             ]);
 
@@ -98,7 +104,6 @@ class SaleController extends Controller
             ]);
         }
 
-        // Actualizar el total de la venta
         $sale->update(['total' => $total]);
 
         Log::info("Venta creada con éxito", ['sale_id' => $sale->id, 'total' => $total]);
@@ -134,15 +139,22 @@ class SaleController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'products' => 'required|array|min:1',
-            'products.*.id' => 'required|exists:products,id',
             'products.*.quantity' => 'required|integer|min:1',
             'is_closed' => 'boolean'
         ]);
 
+        $products = collect($request->products)
+            ->filter(fn($data) => intval($data['quantity']) > 0)
+            ->toArray();
+
+        if (empty($products)) {
+            return back()->withErrors(['products' => 'Debes agregar al menos un producto con cantidad mayor a 0.']);
+        }
+
         $sale = Sale::findOrFail($id);
         $oldProducts = $sale->products->keyBy('id');
         $isClosed = $request->has('is_closed');
-        $units = array_sum(array_column($request->products, 'quantity'));
+        $units = array_sum(array_column($products, 'quantity'));
 
         $sale->update([
             'customer_id' => $request->customer_id,
@@ -152,12 +164,11 @@ class SaleController extends Controller
 
         $total = 0;
         $syncData = [];
+        $newProductIds = array_keys($products);
 
-        $newProductIds = collect($request->products)->pluck('id')->toArray();
-
-        foreach ($request->products as $productData) {
-            $product = Product::findOrFail($productData['id']);
-            $quantity = $productData['quantity'];
+        foreach ($products as $productId => $data) {
+            $product = Product::findOrFail($productId);
+            $quantity = $data['quantity'];
             $cost = $product->cost;
             $price = $product->price;
             $subtotal = $price * $quantity;

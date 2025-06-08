@@ -45,15 +45,16 @@
             <x-linkNavbar href="{{ route('accounts.index') }}" icon="{{ 'calculator' }}"> Cuentas </x-linkNavbar>
             <x-linkNavbar href="{{ route('movements.index') }}" icon="{{ 'wallet' }}"> Cartera
             </x-linkNavbar>
+            <div class="flex-grow"></div>
+            <form action="{{ route('logout') }}" method="POST" class="mb-6">
+                @csrf
+                <button type="submit"
+                    class="w-full text-gray-300 text-lg flex items-center justify-center gap-2 hover:text-white transition-all">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Cerrar sesión
+                </button>
+            </form>
         </div>
-        {{-- <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit"
-                class="bg-black bg-opacity-40 text-red-500 mb-4 text-lg font-semibold px-2 py-1 rounded-lg">
-                Logout
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-        </form> --}}
     </header>
 
     <!-- Contenido principal -->
